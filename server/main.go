@@ -4,6 +4,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"go-server/models"
+	"go-server/services"
 	"time"
 )
 
@@ -19,6 +20,11 @@ func main() {
 		AllowCredentials: true,
 		MaxAge:           1 * time.Minute,
 	}))
+
+	api := r.Group("/api")
+	{
+		api.POST("/register", services.RegisterUser)
+	}
 
 	r.Run()
 }
