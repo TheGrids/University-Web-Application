@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -141,6 +142,7 @@ func CheckToken(token string) bool {
 // Refresh Создание JWT с помощью Refresh токена
 func Refresh(c *gin.Context) {
 	tokenRefresh, err := c.Cookie("refresh_token")
+	fmt.Println(tokenRefresh)
 	if err != nil {
 		c.JSON(http.StatusConflict, gin.H{"msg": "Рефреш токен не найден"})
 		return

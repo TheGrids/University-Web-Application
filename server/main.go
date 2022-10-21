@@ -28,6 +28,7 @@ func main() {
 		api.POST("/logout", services.Logout)
 		api.POST("/login", services.LoginUser)
 		api.POST("/refresh", services.Refresh)
+		api.GET("/profile/:id", services.GetProfile)
 	}
 
 	r.Run()
