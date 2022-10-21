@@ -1,70 +1,116 @@
 <template>
     <div class="container mt-5">
         <div class="row">
-
             <div class="d-flex justify-content-center">
-                <form>
+                <div style="width: 300px">
+                    <h2 class="text-center">Регистрация</h2>
+
                     <!-- Email input -->
                     <div class="form-outline mb-4">
-                    <input type="email" id="form2Example1" class="form-control" />
-                    <label class="form-label" for="form2Example1">Email address</label>
+                        <input type="email" id="form2Example1" class="form-control" autocomplete="off" v-model="user.email"/>
+                        <label class="form-label" for="form2Example1">Электронная почта</label>
                     </div>
                 
                     <!-- Password input -->
                     <div class="form-outline mb-4">
-                    <input type="password" id="form2Example2" class="form-control" />
-                    <label class="form-label" for="form2Example2">Password</label>
+                        <input type="password" id="form2Example2" class="form-control" v-model="user.password"/>
+                        <label class="form-label" for="form2Example2">Пароль</label>
+                    </div>
+
+                    <!-- Confirm Password input -->
+                    <div class="form-outline mb-4">
+                        <input type="password" id="form2Example2" class="form-control" v-model="user.password2"/>
+                        <label class="form-label" for="form2Example2">Подтвердите пароль</label>
+                    </div>
+
+                    <!-- First Name input -->
+                    <div class="form-outline mb-4">
+                        <input type="text" id="form2Example3" class="form-control" autocomplete="off" v-model="user.first_name"/>
+                        <label class="form-label" for="form2Example3">Имя</label>
+                    </div>
+
+                    <!-- Last Name input -->
+                    <div class="form-outline mb-4">
+                        <input type="text" id="form2Example4" class="form-control" autocomplete="off" v-model="user.last_name"/>
+                        <label class="form-label" for="form2Example4">Фамилия</label>
                     </div>
                 
                     <!-- 2 column grid layout for inline styling -->
                     <div class="row mb-4">
-                    <div class="col d-flex justify-content-center">
-                        <!-- Checkbox -->
-                        <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="form2Example34" checked />
-                        <label class="form-check-label" for="form2Example34"> Remember me </label>
+                        <div class="col">
+                            <!-- Simple link -->
+                            <a href="#!">Забыли пароль?</a>
                         </div>
                     </div>
                 
-                    <div class="col">
-                        <!-- Simple link -->
-                        <a href="#!">Forgot password?</a>
-                    </div>
-                    </div>
-                
                     <!-- Submit button -->
-                    <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
-                
-                    <!-- Register buttons -->
-                    <div class="text-center">
-                    <p>Not a member? <a href="#!">Register</a></p>
-                    <p>or sign up with:</p>
-                    <button type="button" class="btn btn-primary btn-floating mx-1">
-                        <i class="fab fa-facebook-f"></i>
-                    </button>
-                
-                    <button type="button" class="btn btn-primary btn-floating mx-1">
-                        <i class="fab fa-google"></i>
-                    </button>
-                
-                    <button type="button" class="btn btn-primary btn-floating mx-1">
-                        <i class="fab fa-twitter"></i>
-                    </button>
-                
-                    <button type="button" class="btn btn-primary btn-floating mx-1">
-                        <i class="fab fa-github"></i>
-                    </button>
-                    </div>
-                </form>
+                    <button type="submit" class="btn btn-primary btn-block mb-4" v-on:click="register()">Зарегистрироваться</button>
+                </div>
             </div>
 
         </div>
     </div>
+
+    {{user}}
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
-    name: 'RegistrationPage'
+    name: 'RegistrationPage',
+    data: function() {
+        return {
+            user: {
+                email: '',
+                password: '',
+                password2: '',
+                first_name: '',
+                last_name: ''
+            }
+        }
+    },
+    methods: {
+        register() {
+            if(this.user.email && this.user.password && this.user.first_name && this.user.last_name){
+                if(this.user.password === this.user.password2){
+                    axios.post("https://universityweb.site/api/register", this.user).then(resp => {
+                        console.log("OKAY 200")
+                        console.log(resp);
+
+                        this.$notify({
+                            title: 'Успех',
+                            type: 'success',
+                            text: resp.data.msg
+                        })
+                        this.$router.push('/success')
+                    }).catch(err => {
+                        console.log(err.response.data.msg);
+                        this.$notify({
+                            title: 'Ошибка',
+                            type: 'error',
+                            text: err.response.data.msg
+                        })
+                    })
+                }else{
+                    this.$notify({
+                        title: 'Ошибка',
+                        type: 'error',
+                        text: 'Пароли отличаются'
+                    })
+                }
+            }else {
+                this.$notify({
+                    title: 'Ошибка',
+                    type: 'error',
+                    text: 'Введите данные'
+                })
+            }
+        },
+        test() {
+            console.log("HAHAHHA")
+        }
+    }
 }
 </script>
 
