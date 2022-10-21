@@ -33,11 +33,14 @@
         </div>
     </div>
 
-    {{user}}
+    {{user}} <br>
+    {{this.$store.getters.GETTOKEN}}
 </template>
 
 <script>
 import axios from 'axios'
+import VueJwtDecode from 'vue-jwt-decode'
+
 
 export default {
     name: 'LoginPage',
@@ -45,7 +48,9 @@ export default {
         return {
             user: {
                 email: '',
-                password: ''
+                password: '',
+                smth: this.$cookies.get('smth'),
+                ss: VueJwtDecode.decode("")
             }
         }
     },
@@ -62,6 +67,7 @@ export default {
                         type: 'success',
                         text: resp.data.msg
                     })
+                    this.$store.commit('loginSuccess', this.user);
                 }).catch(err => {
                     console.log(err.response.data.msg);
                     this.$notify({

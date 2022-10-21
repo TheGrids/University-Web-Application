@@ -35,27 +35,21 @@
                         <label class="form-label" for="form2Example4">Фамилия</label>
                     </div>
                 
-                    <!-- 2 column grid layout for inline styling -->
-                    <div class="row mb-4">
-                        <div class="col">
-                            <!-- Simple link -->
-                            <a href="#!">Забыли пароль?</a>
-                        </div>
-                    </div>
-                
                     <!-- Submit button -->
-                    <button type="submit" class="btn btn-primary btn-block mb-4" v-on:click="register()">Зарегистрироваться</button>
+                    <button type="submit" class="btn btn-primary btn-block mb-4" v-on:click="test()">Зарегистрироваться</button>
                 </div>
             </div>
 
         </div>
     </div>
 
-    {{user}}
+    {{user}}<br>
+    {{this.$store.getters.GETTOKEN}}
 </template>
 
 <script>
 import axios from 'axios'
+import store from '../store'
 
 export default {
     name: 'RegistrationPage',
@@ -106,9 +100,6 @@ export default {
                     text: 'Введите данные'
                 })
             }
-        },
-        test() {
-            console.log("HAHAHHA")
         }
     }
 }

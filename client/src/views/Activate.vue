@@ -18,6 +18,7 @@ export default {
         axios.get("https://universityweb.site/api/activate/"+this.uuid).then(resp => {
             console.log("OKAY 200")
             console.log(resp);
+            this.$router.push('/login')
 
             this.$notify({
                 title: 'Успех',
