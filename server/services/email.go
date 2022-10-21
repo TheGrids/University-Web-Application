@@ -17,7 +17,7 @@ func SendEmailUUID(email string, UUID string) {
 
 	m.SetHeader("Subject", "Подтверждение электронной почты University Web")
 
-	m.SetBody("text/plain", "https://"+os.Getenv("EMAIL_HTTP")+"/api/activate/"+UUID)
+	m.SetBody("text/plain", "https://"+os.Getenv("EMAIL_HTTP")+"/activate/"+UUID)
 
 	d := gomail.NewDialer(os.Getenv("EMAIL_SMTP"), 587, os.Getenv("EMAIL_LOGIN"), os.Getenv("EMAIL_PASSWORD"))
 
