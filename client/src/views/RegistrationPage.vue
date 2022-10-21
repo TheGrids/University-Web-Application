@@ -36,7 +36,7 @@
                     </div>
                 
                     <!-- Submit button -->
-                    <button type="submit" class="btn btn-primary btn-block mb-4" v-on:click="test()">Зарегистрироваться</button>
+                    <button type="submit" class="btn btn-primary btn-block mb-4" v-on:click="register()">Зарегистрироваться</button>
                 </div>
             </div>
 

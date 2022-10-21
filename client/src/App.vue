@@ -30,7 +30,7 @@ export default {
                     console.log(err);
                 })
             }else {
-                //
+                console.log("ERR SMTH")
             }
         }
     }
