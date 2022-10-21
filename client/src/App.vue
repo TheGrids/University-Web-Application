@@ -22,13 +22,15 @@ export default {
 
                 this.$store.commit('loginSuccess', user);
             }else if(this.$cookies.get('refresh_token')){
-                axios.post("https://universityweb.site/api/refresh/").then(resp => {
+                axios.post("https://universityweb.site/api/refresh").then(resp => {
                     console.log("OKAY 200")
                     console.log(resp);
                 }).catch(err => {
                     console.log("ERR SMTH")
                     console.log(err);
                 })
+            }else {
+                //
             }
         }
     }
