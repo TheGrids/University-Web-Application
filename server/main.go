@@ -24,6 +24,11 @@ func main() {
 	api := r.Group("/api")
 	{
 		api.POST("/register", services.RegisterUser)
+		api.GET("/activate/:uuid", services.Activate)
+		api.POST("/logout", services.Logout)
+		api.POST("/login", services.LoginUser)
+		api.POST("/register", services.RegisterUser)
+		api.POST("/refresh", services.Refresh)
 	}
 
 	r.Run()

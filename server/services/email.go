@@ -7,6 +7,7 @@ import (
 	"os"
 )
 
+// SendEmailUUID Отправка Email с подтверждением на почту
 func SendEmailUUID(email string, UUID string) {
 	m := gomail.NewMessage()
 
