@@ -24,9 +24,10 @@ export default {
             }else if(this.$cookies.get('refresh_token')){
                 axios.post("https://universityweb.site/api/refresh/").then(resp => {
                     console.log("OKAY 200")
-                    console.log(resp.data);
+                    console.log(resp);
                 }).catch(err => {
-                    console.log(err.response.data.msg);
+                    console.log("ERR SMTH")
+                    console.log(err);
                 })
             }
         }
