@@ -35,6 +35,7 @@ func main() {
 		{
 			admin.GET("/profiles", services.GetUsers)
 			admin.PUT("/changerole", services.ChangeRole)
+			admin.PUT("/changedata", services.ChangeData)
 			admin.DELETE("/person/delete", services.DeleteUser)
 		}
 	}
