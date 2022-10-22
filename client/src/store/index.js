@@ -1,27 +1,35 @@
 import { createStore } from 'vuex'
-import store from '../store'
 
 export default createStore({
     state: {
         isLogged: false,
-        token: null,
-        user: null
+        user: {
+            email: null,
+            userid: null,
+            role: null
+        }
     },
     getters: {
-        GETTOKEN: state => {
-            return state;
+        GETINFO: state => {
+            return state
         },
+        GETSTATUS: state => {
+            return state.isLogged
+        },
+        GETROLE: state => {
+            return state.user.role;
+        }
     },
     mutations: {
         loginSuccess(state, user) {
             state.isLogged = true;
-            state.user = user;
+            state.user.email = user.email;
+            state.user.userid = user.userid;
+            state.user.role = user.role;
         },
     },
     actions: {
-        LOGIN: () => {
-            store.commit('loginSuccess');
-        }
+
     },
     modules: {
     }

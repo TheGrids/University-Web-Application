@@ -21,7 +21,7 @@
                     <div class="row mb-4">
                         <div class="col">
                             <!-- Simple link -->
-                            <a href="#!">Забыли пароль?</a>
+                            <router-link to="/registration">Нет аккаунта?</router-link>
                         </div>
                     </div>
                 
@@ -34,7 +34,7 @@
     </div>
 
     {{user}} <br>
-    {{this.$store.getters.GETTOKEN}}
+    {{this.$store.getters.GETINFO}}
 </template>
 
 <script>
@@ -48,9 +48,7 @@ export default {
         return {
             user: {
                 email: '',
-                password: '',
-                smth: this.$cookies.get('smth'),
-                ss: VueJwtDecode.decode("")
+                password: ''
             }
         }
     },
@@ -60,14 +58,14 @@ export default {
                 axios.post("https://universityweb.site/api/login", this.user).then(resp => {
                     console.log("OKAY 200")
                     console.log(resp.data.access);
-                    localStorage.setItem('accessToken', resp.data.access);
 
-                    this.$notify({
-                        title: 'Успех',
-                        type: 'success',
-                        text: resp.data.msg
+                    axios.get("https://universityweb.site/api/verification", {headers: {'Authorization': resp.data.access}}).then(resp => {
+                        console.log(resp)
+                    }).catch(err => {
+                        console.log(err.response.data.msg);
                     })
-                    this.$store.commit('loginSuccess', this.user);
+
+                    //this.$router.go()
                 }).catch(err => {
                     console.log(err.response.data.msg);
                     this.$notify({

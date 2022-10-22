@@ -12,3 +12,9 @@ body {
 .notification-content {
     font-size: 16px;
 }
+.who {
+    padding: 5px 10px 5px 10px;
+    border-radius: 15px;
+    color: #FBFBFB;
+    background-color: #3B71CA;
+}

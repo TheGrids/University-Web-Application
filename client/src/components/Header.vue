@@ -1,37 +1,79 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <nav class="navbar navbar-expand-lg navbar-light bb">
         <div class="container">
             <button
                 class="navbar-toggler"
                 type="button"
                 data-mdb-toggle="collapse"
-                data-mdb-target="#navbarExample01"
-                aria-controls="navbarExample01"
+                data-mdb-target="#navbarCenteredExample"
+                aria-controls="navbarCenteredExample"
                 aria-expanded="false"
                 aria-label="Toggle navigation"
             >
-                <i class="fas fa-bars"></i>
+            <i class="fas fa-bars"></i>
             </button>
-            <div class="collapse navbar-collapse" id="navbarExample01">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item active">
-                    <router-link class="nav-link" to="/">Home</router-link>
-                </li>
-                <li class="nav-item">
-                    <router-link class="nav-link" to="/registration">Registration Page</router-link>
-                </li>
+            <div class="collapse navbar-collapse justify-content-between" id="navbarCenteredExample">
+                <!-- Left links -->
+                <ul class="navbar-nav mb-2 mb-lg-0">
+                    <li class="nav-item active">
+                        <router-link class="nav-link  text-white" to="/">Главная</router-link>
+                    </li>
+                    <li class="nav-item active">
+                        <router-link class="nav-link  text-white" to="/admin">Админ панель</router-link>
+                    </li>
+                </ul>
+
+                <ul v-if="this.$store.getters.GETSTATUS" class="navbar-nav mb-2 mb-lg-0">
+                    <li class="nav-item" style="margin-right: 8px">
+                        <router-link style="color: white" :to="`/profile/`+this.$store.getters.GETINFO.user.userid">
+                            <button type="button" class="btn c-q btn-floating">
+                                <i class="fa fa-user-alt"></i>
+                            </button>
+                        </router-link>
+                    </li>
+                    <li class="nav-item">
+                        <button type="submit" class="btn c-q btn-floating" v-on:click="logout()"><i class="fas fa-sign-out-alt"></i></button>
+                    </li>
+                </ul>
+                <ul v-if="!this.$store.getters.GETSTATUS" class="navbar-nav mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <router-link class="btn c-q btn-floating" to="/login"><i class="fas fa-sign-in-alt"></i></router-link>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
 </template>
-
+<style>
+    .c-q {
+        background-color: #2496A0;
+        color: white;
+    }
+    .bb {
+        background-color: #3F3558;
+    }
+</style>
 <script>
+import axios from 'axios'
+
 export default {
-    name: 'Header'
+    name: 'Header',
+    methods: {
+        logout() {
+            localStorage.removeItem('accessToken');
+            this.$store.state.isLogged = false;
+            this.$store.state.user = {
+                email: null,
+                userid: null,
+                role: null
+            }
+            this.$router.go()
+        }
+    }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
+
 </style>

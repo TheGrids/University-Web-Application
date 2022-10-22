@@ -13,14 +13,14 @@
                 
                     <!-- Password input -->
                     <div class="form-outline mb-4">
-                        <input type="password" id="form2Example2" class="form-control" v-model="user.password"/>
-                        <label class="form-label" for="form2Example2">Пароль</label>
+                        <input type="password" id="form2Example6" class="form-control" v-model="user.password"/>
+                        <label class="form-label" for="form2Example6">Пароль</label>
                     </div>
 
                     <!-- Confirm Password input -->
                     <div class="form-outline mb-4">
-                        <input type="password" id="form2Example2" class="form-control" v-model="user.password2"/>
-                        <label class="form-label" for="form2Example2">Подтвердите пароль</label>
+                        <input type="password" id="form2Example8" class="form-control" v-model="user.password2"/>
+                        <label class="form-label" for="form2Example8">Подтвердите пароль</label>
                     </div>
 
                     <!-- First Name input -->
@@ -34,9 +34,24 @@
                         <input type="text" id="form2Example4" class="form-control" autocomplete="off" v-model="user.last_name"/>
                         <label class="form-label" for="form2Example4">Фамилия</label>
                     </div>
-                
+
+                    <div class="form-check">
+                        <input class="form-check-input" name="sm" type="radio" value="student" id="form1Example3" v-model="user.role"/>
+                        <label class="form-check-label" for="form1Example3">Я студент</label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" name="sm" type="radio" value="teacher" id="form1Example3"  v-model="user.role"/>
+                        <label class="form-check-label" for="form1Example3">Я преподаватель</label>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col">
+                            <!-- Simple link -->
+                            <router-link to="/login">Есть аккаунт?</router-link>
+                        </div>
+                    </div>
                     <!-- Submit button -->
-                    <button type="submit" class="btn btn-primary btn-block mb-4" v-on:click="register()">Зарегистрироваться</button>
+                    <button type="submit" class="btn btn-primary btn-block mt-2" v-on:click="register()">Зарегистрироваться</button>
                 </div>
             </div>
 
@@ -44,8 +59,15 @@
     </div>
 
     {{user}}<br>
-    {{this.$store.getters.GETTOKEN}}
+    {{this.$store.getters.GETINFO}}
 </template>
+
+<style>
+.form-outline {
+    background-color: #F6F6F6;
+    border-radius: 0.25rem;
+}
+</style>
 
 <script>
 import axios from 'axios'
@@ -60,7 +82,8 @@ export default {
                 password: '',
                 password2: '',
                 first_name: '',
-                last_name: ''
+                last_name: '',
+                role: 'student'
             }
         }
     },
