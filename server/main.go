@@ -14,7 +14,7 @@ func main() {
 	models.ConnectionDataBase()
 
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000", "https://universityweb.site"},
+		AllowOrigins:     []string{"http://localhost:3000", "https://universityweb.site", "http://127.0.0.1:3000"},
 		AllowHeaders:     []string{"Role", "Origin", "Content-Type", "Authorization"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
 		AllowCredentials: true,
