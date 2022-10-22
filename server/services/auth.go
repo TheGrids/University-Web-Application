@@ -1,6 +1,8 @@
 package services
 
 import (
+	"crypto/md5"
+	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -26,7 +28,7 @@ func RegisterUser(c *gin.Context) {
 		return
 	}
 
-	user := models.User{Email: input.Email, Password: input.Password, FirstName: input.FirstName, LastName: input.LastName, EmailCheck: false}
+	user := models.User{Email: input.Email, Password: MD5(input.Password), FirstName: input.FirstName, LastName: input.LastName, Role: input.Role, EmailCheck: false}
 	models.DB.Create(&user)
 
 	emailCheck := models.EmailCheck{ID: user.ID, UUID: uuid.New().String()}
@@ -53,7 +55,7 @@ func LoginUser(c *gin.Context) {
 		return
 	}
 
-	if user.Password != input.Password {
+	if user.Password != MD5(input.Password) {
 		c.JSON(http.StatusForbidden, gin.H{"msg": "Неверный пароль"})
 		return
 	}
@@ -193,4 +195,9 @@ func Activate(c *gin.Context) {
 	models.DB.Delete(&emailCheck)
 
 	c.JSON(http.StatusOK, gin.H{"msg": "Аккаунт успешно активирован!"})
+}
+
+func MD5(data string) string {
+	h := md5.Sum([]byte(data))
+	return fmt.Sprintf("%x", h)
 }
