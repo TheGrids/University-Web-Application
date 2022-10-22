@@ -44,7 +44,7 @@ func DeleteUser(c *gin.Context) {
 		return
 	}
 
-	if err := models.DB.Where("id=?", input.ID).Delete; err != nil {
+	if err := models.DB.Where("id=?", input.ID).First(&models.User{}).Delete; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"msg": "Пользователь не найден"})
 		return
 	}
