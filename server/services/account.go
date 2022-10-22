@@ -17,6 +17,7 @@ func GetProfile(c *gin.Context) {
 		Email:     user.Email,
 		FirstName: user.FirstName,
 		LastName:  user.LastName,
+		Role:      user.Role,
 	}
 
 	c.JSON(http.StatusOK, gin.H{"data": data})
