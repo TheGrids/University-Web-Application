@@ -6,6 +6,7 @@ type User struct {
 	Password   string `json:"password"`
 	FirstName  string `json:"first_name"`
 	LastName   string `json:"last_name"`
+	Role       string `json:"role"`
 	EmailCheck bool   `json:"email_check"`
 }
 
@@ -14,6 +15,7 @@ type UserRegisterData struct {
 	Password  string `json:"password" binding:"required"`
 	FirstName string `json:"first_name" binding:"required"`
 	LastName  string `json:"last_name" binding:"required"`
+	Role      string `json:"role" binding:"required"`
 }
 
 type UserLoginData struct {

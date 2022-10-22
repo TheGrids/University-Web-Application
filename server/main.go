@@ -25,9 +25,9 @@ func main() {
 	{
 		api.POST("/register", services.RegisterUser)
 		api.GET("/activate/:uuid", services.Activate)
-		api.POST("/logout", services.Logout)
+		//api.POST("/logout", services.Logout)
 		api.POST("/login", services.LoginUser)
-		api.POST("/refresh", services.Refresh)
+		//api.POST("/refresh", services.Refresh)
 		api.GET("/profile/:id", services.GetProfile)
 	}
 

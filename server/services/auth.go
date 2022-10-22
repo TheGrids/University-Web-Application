@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -64,19 +63,18 @@ func LoginUser(c *gin.Context) {
 		return
 	}
 
-	token := models.Token{}
-	tokens := models.Token{ID: user.ID, Access: CreateToken(user), Refresh: CreateTokenRefresh()}
+	token := CreateToken(user)
+	//tokens := models.Token{ID: user.ID, Access: CreateToken(user), Refresh: CreateTokenRefresh()}
 
-	if err := models.DB.Where("id=?", user.ID).First(&token).Error; err != nil {
-		models.DB.Create(&tokens)
-		c.SetCookie("refresh_token", tokens.Refresh, 60*60*24*30, "/", os.Getenv("cookie_http"), false, true) // if https: secure = true
-		c.JSON(http.StatusOK, gin.H{"access": tokens.Access})
-		return
-	}
-
-	models.DB.Model(&token).Updates(tokens)
-	c.SetCookie("refresh_token", tokens.Refresh, 60*60*24*30, "/", os.Getenv("cookie_http"), false, true) // if https: secure = true
-	c.JSON(http.StatusOK, gin.H{"access": tokens.Access})
+	//if err := models.DB.Where("id=?", user.ID).First(&token).Error; err != nil {
+	//	models.DB.Create(&tokens)
+	//	c.SetCookie("refresh_token", tokens.Refresh, 60*60*24*30, "/", os.Getenv("cookie_http"), false, true) // if https: secure = true
+	//	c.JSON(http.StatusOK, gin.H{"access": tokens.Access})
+	//	return
+	//}
+	//models.DB.Model(&token).Updates(tokens)
+	//c.SetCookie("refresh_token", tokens.Refresh, 60*60*24*30, "/", os.Getenv("cookie_http"), false, true) // if https: secure = true
+	c.JSON(http.StatusOK, gin.H{"access": token})
 }
 
 // CreateToken Создание JWT
@@ -84,7 +82,7 @@ func CreateToken(user models.User) string {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"userid": user.ID,
 		"email":  user.Email,
-		"exp":    time.Now().Add(time.Minute * 5).Unix(),
+		"exp":    time.Now().Add(time.Hour * 24 * 2).Unix(),
 	})
 
 	jwtToken, _ := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
@@ -92,37 +90,37 @@ func CreateToken(user models.User) string {
 }
 
 // CreateTokenRefresh Создание Refresh токена
-func CreateTokenRefresh() string {
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"exp": time.Now().Add(time.Hour * 7200).Unix(),
-	})
-
-	jwtToken, _ := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
-	return jwtToken
-}
+//func CreateTokenRefresh() string {
+//	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+//		"exp": time.Now().Add(time.Hour * 7200).Unix(),
+//	})
+//
+//	jwtToken, _ := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
+//	return jwtToken
+//}
 
 // Logout Выход из аккаунта
-func Logout(c *gin.Context) {
-
-	token := models.Token{}
-
-	refreshToken, err := c.Cookie("refresh_token")
-
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": err})
-		return
-	}
-
-	if err := models.DB.Where("refresh=?", refreshToken).First(&token).Error; err == nil {
-		models.DB.Delete(&token)
-	}
-
-	c.SetCookie("refresh_token", "", -1, "/", "", false, true)
-	c.JSON(http.StatusOK, gin.H{"msg": "Вы успешно вышли из системы"})
-}
+//func Logout(c *gin.Context) {
+//
+//	token := models.Token{}
+//
+//	refreshToken, err := c.Cookie("refresh_token")
+//
+//	if err != nil {
+//		c.JSON(http.StatusBadRequest, gin.H{"msg": err})
+//		return
+//	}
+//
+//	if err := models.DB.Where("refresh=?", refreshToken).First(&token).Error; err == nil {
+//		models.DB.Delete(&token)
+//	}
+//
+//	c.SetCookie("refresh_token", "", -1, "/", "", false, true)
+//	c.JSON(http.StatusOK, gin.H{"msg": "Вы успешно вышли из системы"})
+//}
 
 // CheckToken Проверка JWT
-func CheckToken(token string) bool {
+func CheckToken(token string) (uint, bool) {
 	type MyCustomClaims struct {
 		ID    uint   `json:"userid"`
 		Email string `json:"email"`
@@ -134,41 +132,46 @@ func CheckToken(token string) bool {
 	})
 
 	if _, ok := tokenParse.Claims.(*MyCustomClaims); ok && tokenParse.Valid {
-		return true
+		if err := models.DB.Where("id=?", tokenParse.Claims.(*MyCustomClaims).ID).First(&models.User{}).Error; err == nil {
+			return tokenParse.Claims.(*MyCustomClaims).ID, true
+		} else {
+			return 0, false
+		}
 	}
-	return false
+
+	return 0, false
 }
 
 // Refresh Создание JWT с помощью Refresh токена
-func Refresh(c *gin.Context) {
-	tokenRefresh, err := c.Cookie("refresh_token")
-	fmt.Println(tokenRefresh)
-	if err != nil {
-		c.JSON(http.StatusConflict, gin.H{"msg": "Рефреш токен не найден"})
-		return
-	}
-
-	token := models.Token{}
-
-	if err := models.DB.Where("refresh=?", tokenRefresh).First(&token).Error; err == nil && CheckToken(tokenRefresh) {
-		user := models.User{}
-
-		models.DB.Where("id=?", token.ID).First(&user)
-
-		newToken := CreateToken(user)
-		//хардкод - наше всё!
-		newTokenStruct := models.Token{Access: newToken}
-
-		models.DB.Model(&token).Updates(newTokenStruct)
-		c.JSON(http.StatusOK, gin.H{"access": newToken})
-		return
-	} else if !CheckToken(tokenRefresh) {
-		models.DB.Delete(&token)
-	}
-
-	c.SetCookie("refresh_token", "", -1, "/", "", false, true)
-	c.JSON(http.StatusConflict, gin.H{"msg": "Рефреш токен не валидный"})
-}
+//func Refresh(c *gin.Context) {
+//	tokenRefresh, err := c.Cookie("refresh_token")
+//	fmt.Println(tokenRefresh)
+//	if err != nil {
+//		c.JSON(http.StatusConflict, gin.H{"msg": "Рефреш токен не найден"})
+//		return
+//	}
+//
+//	token := models.Token{}
+//
+//	if err := models.DB.Where("refresh=?", tokenRefresh).First(&token).Error; err == nil && CheckToken(tokenRefresh) {
+//		user := models.User{}
+//
+//		models.DB.Where("id=?", token.ID).First(&user)
+//
+//		newToken := CreateToken(user)
+//		//хардкод - наше всё!
+//		newTokenStruct := models.Token{Access: newToken}
+//
+//		models.DB.Model(&token).Updates(newTokenStruct)
+//		c.JSON(http.StatusOK, gin.H{"access": newToken})
+//		return
+//	} else if !CheckToken(tokenRefresh) {
+//		models.DB.Delete(&token)
+//	}
+//
+//	c.SetCookie("refresh_token", "", -1, "/", "", false, true)
+//	c.JSON(http.StatusConflict, gin.H{"msg": "Рефреш токен не валидный"})
+//}
 
 func Activate(c *gin.Context) {
 	emailCheck := models.EmailCheck{}
