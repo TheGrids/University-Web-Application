@@ -60,7 +60,10 @@ export default {
                     console.log(resp.data.access);
 
                     axios.get("https://universityweb.site/api/verification", {headers: {'Authorization': resp.data.access}}).then(resp => {
-                        console.log(resp)
+                        if(resp.status == 200){
+                            localStorage.setItem('role', resp.headers['role']);
+                            console.log("OKAY")
+                        }
                     }).catch(err => {
                         console.log(err.response.data.msg);
                     })
