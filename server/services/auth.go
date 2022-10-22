@@ -138,7 +138,7 @@ func CheckToken(token string, c *gin.Context) (uint, bool) {
 	err := models.DB.Where("id=?", tokenParse.Claims.(*MyCustomClaims).ID).First(&user).Error
 
 	if _, ok := tokenParse.Claims.(*MyCustomClaims); ok && tokenParse.Valid && err == nil {
-		c.Request.Header.Add("Role", user.Role)
+		c.Header("Role", user.Role)
 		return tokenParse.Claims.(*MyCustomClaims).ID, true
 	}
 
