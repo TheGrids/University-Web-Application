@@ -204,6 +204,6 @@ func MD5(data string) string {
 
 func GetRole(c *gin.Context) {
 	//token := c.Request.Header[""]
-	c.Request.Header.Add("role", "aboba")
+	c.Request.Header.Add("Authorization", "aboba")
 	c.JSON(http.StatusOK, gin.H{"msg": "Проверь хэдер"})
 }
