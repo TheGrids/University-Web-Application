@@ -29,7 +29,7 @@ func main() {
 		api.POST("/login", services.LoginUser)
 		//api.POST("/refresh", services.Refresh)
 		api.GET("/profile/:id", services.GetProfile)
-		api.GET("header", services.Verification)
+		api.GET("/verification", services.Verification)
 	}
 
 	r.Run()
