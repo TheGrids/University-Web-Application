@@ -7,7 +7,7 @@
 
                     <!-- Email input -->
                     <div class="form-outline mb-4">
-                        <input type="email" id="form2Example1" class="form-control" v-model="user.email" autocomplete="off"/>
+                        <input type="email" id="form2Example1" class="form-control" v-model="user.email"/>
                         <label class="form-label" for="form2Example1">Электронная почта</label>
                     </div>
                 
@@ -59,15 +59,19 @@ export default {
                     console.log("OKAY 200")
                     console.log(resp.data.access);
 
-                    axios.get("https://universityweb.site/api/verification", {headers: {'Authorization': resp.data.access}}).then(resp => {
-                        if(resp.status == 200){
-                            localStorage.setItem('role', resp.headers['role']);
-                            console.log("OKAY")
+                    axios.get("https://universityweb.site/api/verification", {headers: {'Authorization': resp.data.access}}).then(respp => {
+                        if(respp.status == 200){
+                            let us = VueJwtDecode.decode(resp.data.access)
+                            localStorage.setItem('role', respp.headers['role']);
+                            localStorage.setItem('uid', us.userid);
+                            localStorage.setItem('accessToken', resp.data.access);
+
+                            this.$store.commit('loginSuccess', us)
                         }
+                        this.$router.go()
                     }).catch(err => {
                         console.log(err.response.data.msg);
                     })
-
                     //this.$router.go()
                 }).catch(err => {
                     console.log(err.response.data.msg);

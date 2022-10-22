@@ -11,23 +11,23 @@ import store from '../store'
 
 let authToken = localStorage.getItem('accessToken');
 let authGuard = function(to, from, next) {
-    if(!authToken || !store.getters.GETSTATUS) {
+    if(!authToken) {
         next({name: 'Registration'})
     }else{
         next()
     }
 }
-let isL = function(to, from, next) {
+let managerRegLog = function(to, from, next) {
     if(authToken) {
         next({name: 'Home'})
     }else{
         next()
     }
 }
-let managerAuthGuard = function(to, from, next) {
+let managerAdminGuard = function(to, from, next) {
     if(!authToken) {
         next({name: 'LoginPage'})
-    }else if(store.getters.GETROLE !== 'admin'){
+    }else if(localStorage.getItem('role') != 'admin'){
         next( { name: 'Home' })
     }else {
         next()
@@ -45,13 +45,14 @@ const routes = [
     {
         path: '/registration',
         name: 'Registration',
-        component: RegistrationPage
+        component: RegistrationPage,
+        beforeEnter: managerRegLog
     },
     {
         path: '/login',
         name: 'LoginPage',
         component: LoginPage,
-        beforeEnter: isL
+        beforeEnter: managerRegLog
     },
     {
         path: '/success',
@@ -67,7 +68,7 @@ const routes = [
         path: '/admin',
         name: 'AdminPanel',
         component: AdminPanel,
-        beforeEnter: managerAuthGuard
+        beforeEnter: managerAdminGuard
     },
     {
         path: '/profile/:uid',

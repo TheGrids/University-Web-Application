@@ -2,7 +2,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bb">
         <div class="container">
             <button
-                class="navbar-toggler"
+                class="navbar-toggler text-white"
                 type="button"
                 data-mdb-toggle="collapse"
                 data-mdb-target="#navbarCenteredExample"
@@ -18,7 +18,7 @@
                     <li class="nav-item active">
                         <router-link class="nav-link  text-white" to="/">Главная</router-link>
                     </li>
-                    <li class="nav-item active">
+                    <li class="nav-item active" v-if="this.smth">
                         <router-link class="nav-link  text-white" to="/admin">Админ панель</router-link>
                     </li>
                 </ul>
@@ -42,7 +42,8 @@
                 </ul>
             </div>
         </div>
-    </nav>
+    </nav>    
+    {{this.$store.getters.GETINFO}} {{this.smth}}
 </template>
 <style>
     .c-q {
@@ -58,9 +59,17 @@ import axios from 'axios'
 
 export default {
     name: 'Header',
+    props: ['smth'],
+    data: function( ){
+        return {
+            admin: false
+        }
+    },
     methods: {
         logout() {
             localStorage.removeItem('accessToken');
+            localStorage.removeItem('uid');
+            localStorage.removeItem('role');
             this.$store.state.isLogged = false;
             this.$store.state.user = {
                 email: null,

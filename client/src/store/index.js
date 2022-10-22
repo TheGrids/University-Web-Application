@@ -5,8 +5,7 @@ export default createStore({
         isLogged: false,
         user: {
             email: null,
-            userid: null,
-            role: null
+            userid: null
         }
     },
     getters: {
@@ -15,17 +14,13 @@ export default createStore({
         },
         GETSTATUS: state => {
             return state.isLogged
-        },
-        GETROLE: state => {
-            return state.user.role;
         }
     },
     mutations: {
-        loginSuccess(state, user) {
+        loginSuccess(state, us) {
             state.isLogged = true;
-            state.user.email = user.email;
-            state.user.userid = user.userid;
-            state.user.role = user.role;
+            state.user.email = us.email;
+            state.user.userid = us.userid;
         },
     },
     actions: {

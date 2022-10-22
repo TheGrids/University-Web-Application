@@ -99,7 +99,7 @@ export default {
         }
     },
     mounted() {
-        axios.get("https://universityweb.site/api/profile/"+this.uuid).then(resp => {
+        axios.get("https://universityweb.site/api/profile/"+localStorage.getItem('uid')).then(resp => {
             this.role = resp.data.data.role
             this.fname = resp.data.data.firstName
             this.lname = resp.data.data.lastName
@@ -111,6 +111,7 @@ export default {
                 type: 'error',
                 text: err.response.data.msg
             })
+            this.$router.push('/login')
         })
     }
 }
