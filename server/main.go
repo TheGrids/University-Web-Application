@@ -30,7 +30,6 @@ func main() {
 		//api.POST("/refresh", services.Refresh)
 		api.GET("/profile/:id", services.GetProfile)
 		api.GET("/verification", services.Verification)
-		api.GET("/profile/:id", services.GetProfile)
 	}
 
 	r.Run()

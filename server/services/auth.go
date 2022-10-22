@@ -28,7 +28,18 @@ func RegisterUser(c *gin.Context) {
 		return
 	}
 
-	user := models.User{Email: input.Email, Password: MD5(input.Password), FirstName: input.FirstName, LastName: input.LastName, Role: input.Role, EmailCheck: false}
+	user := models.User{
+		Email:           input.Email,
+		Password:        MD5(input.Password),
+		FirstName:       input.FirstName,
+		LastName:        input.LastName,
+		Role:            input.Role,
+		EmailCheck:      false,
+		Faculty:         "",
+		Group:           "",
+		FormOfEducation: "",
+		Level:           "",
+	}
 	models.DB.Create(&user)
 
 	emailCheck := models.EmailCheck{ID: user.ID, UUID: uuid.New().String()}
