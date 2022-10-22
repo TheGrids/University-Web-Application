@@ -15,7 +15,7 @@ func main() {
 
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:3000", "https://universityweb.site"},
-		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization", "Role"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
 		AllowCredentials: true,
 		MaxAge:           1 * time.Minute,
@@ -29,7 +29,7 @@ func main() {
 		api.POST("/login", services.LoginUser)
 		//api.POST("/refresh", services.Refresh)
 		api.GET("/profile/:id", services.GetProfile)
-		api.GET("header", services.GetRole)
+		api.GET("header", services.Verification)
 	}
 
 	r.Run()

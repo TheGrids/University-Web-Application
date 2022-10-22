@@ -122,7 +122,9 @@ func CreateToken(user models.User) string {
 //}
 
 // CheckToken Проверка JWT
-func CheckToken(token string) (uint, bool) {
+func CheckToken(token string, c *gin.Context) (uint, bool) {
+	var user models.User
+
 	type MyCustomClaims struct {
 		ID    uint   `json:"userid"`
 		Email string `json:"email"`
@@ -133,12 +135,11 @@ func CheckToken(token string) (uint, bool) {
 		return []byte(os.Getenv("JWT_SECRET")), nil
 	})
 
-	if _, ok := tokenParse.Claims.(*MyCustomClaims); ok && tokenParse.Valid {
-		if err := models.DB.Where("id=?", tokenParse.Claims.(*MyCustomClaims).ID).First(&models.User{}).Error; err == nil {
-			return tokenParse.Claims.(*MyCustomClaims).ID, true
-		} else {
-			return 0, false
-		}
+	err := models.DB.Where("id=?", tokenParse.Claims.(*MyCustomClaims).ID).First(&user).Error
+
+	if _, ok := tokenParse.Claims.(*MyCustomClaims); ok && tokenParse.Valid && err == nil {
+		c.Header("Role", user.Role)
+		return tokenParse.Claims.(*MyCustomClaims).ID, true
 	}
 
 	return 0, false
@@ -202,8 +203,10 @@ func MD5(data string) string {
 	return fmt.Sprintf("%x", h)
 }
 
-func GetRole(c *gin.Context) {
-	//token := c.Request.Header[""]
-	c.Header("Authorization", "aboba")
-	c.JSON(http.StatusOK, gin.H{"msg": "Проверь хэдер"})
+func Verification(c *gin.Context) {
+	if _, ok := CheckToken(c.Request.Header.Get("Authorization"), c); ok {
+		c.JSON(http.StatusOK, gin.H{"msg": "Успешный успех"})
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": "Ваша сессия истекла. Подалуйста, войдите заново."})
+	}
 }
