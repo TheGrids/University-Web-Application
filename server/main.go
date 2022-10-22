@@ -34,6 +34,7 @@ func main() {
 		admin := api.Group("/admin")
 		{
 			admin.GET("/profiles", services.GetUsers)
+			admin.PUT("/changerole", services.ChangeRole)
 			admin.DELETE("/person/delete", services.DeleteUser)
 		}
 	}

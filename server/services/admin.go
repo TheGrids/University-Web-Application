@@ -40,14 +40,43 @@ func DeleteUser(c *gin.Context) {
 	var input models.User
 
 	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err})
 		return
 	}
 
-	if err := models.DB.Where("id=?", input.ID).First(&models.User{}).Delete; err != nil {
+	if err := models.DB.Where("id=?", input.ID).First(&input).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"msg": "Пользователь не найден"})
 		return
 	}
 
+	models.DB.Delete(input)
+
 	c.JSON(http.StatusOK, gin.H{"msg": "Успешно удалено"})
+}
+
+func ChangeRole(c *gin.Context) {
+	token := c.Request.Header.Get("Authorization")
+	if token == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": "Не найден токен."})
+		return
+	}
+
+	if _, role, ok := CheckToken(token, c); !ok || role != "admin" {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": "Недостаточно прав."})
+		return
+	}
+
+	var input models.User
+
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err})
+		return
+	}
+
+	if err := models.DB.Where("id=?", input.ID).First(&models.User{}).Update("role", input.Role); err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"msg": "Пользователь не найден"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"msg": "Успешно изменено на " + input.Role})
 }
