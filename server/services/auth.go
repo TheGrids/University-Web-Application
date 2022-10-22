@@ -204,6 +204,11 @@ func MD5(data string) string {
 }
 
 func Verification(c *gin.Context) {
+	token := c.Request.Header.Get("Authorization")
+	if token == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": "Не найден токен."})
+		return
+	}
 	if _, ok := CheckToken(c.Request.Header.Get("Authorization"), c); ok {
 		c.JSON(http.StatusOK, gin.H{"msg": "Успешный успех"})
 	} else {
