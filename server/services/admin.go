@@ -7,7 +7,13 @@ import (
 )
 
 func GetUsers(c *gin.Context) {
-	if _, role, ok := CheckToken(c.Request.Header.Get("Authorization"), c); !ok || role != "admin" {
+	token := c.Request.Header.Get("Authorization")
+	if token == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": "Не найден токен."})
+		return
+	}
+
+	if _, role, ok := CheckToken(token, c); !ok || role != "admin" {
 		c.JSON(http.StatusBadRequest, gin.H{"msg": "Недостаточно прав."})
 		return
 	}

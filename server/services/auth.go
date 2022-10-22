@@ -220,7 +220,7 @@ func Verification(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"msg": "Не найден токен."})
 		return
 	}
-	if _, _, ok := CheckToken(c.Request.Header.Get("Authorization"), c); ok {
+	if _, _, ok := CheckToken(token, c); ok {
 		c.JSON(http.StatusOK, gin.H{"msg": "Успешный успех"})
 	} else {
 		c.JSON(http.StatusBadRequest, gin.H{"msg": "Ваша сессия истекла. Пожалуйста, войдите заново."})
