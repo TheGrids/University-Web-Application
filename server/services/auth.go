@@ -201,3 +201,9 @@ func MD5(data string) string {
 	h := md5.Sum([]byte(data))
 	return fmt.Sprintf("%x", h)
 }
+
+func GetRole(c *gin.Context) {
+	//token := c.Request.Header[""]
+	c.Request.Header.Add("role", "aboba")
+	c.JSON(http.StatusOK, gin.H{"msg": "Проверь хэдер"})
+}
