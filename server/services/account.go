@@ -14,10 +14,14 @@ func GetProfile(c *gin.Context) {
 	}
 
 	data := models.GetProfile{
-		Email:     user.Email,
-		FirstName: user.FirstName,
-		LastName:  user.LastName,
-		Role:      user.Role,
+		Email:           user.Email,
+		FirstName:       user.FirstName,
+		LastName:        user.LastName,
+		Role:            user.Role,
+		Faculty:         user.Faculty,
+		Group:           user.Group,
+		FormOfEducation: user.FormOfEducation,
+		Level:           user.Level,
 	}
 
 	c.JSON(http.StatusOK, gin.H{"data": data})

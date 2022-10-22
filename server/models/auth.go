@@ -1,13 +1,17 @@
 package models
 
 type User struct {
-	ID         uint   `json:"id" gorm:"primary_key"`
-	Email      string `json:"email"`
-	Password   string `json:"password"`
-	FirstName  string `json:"first_name"`
-	LastName   string `json:"last_name"`
-	Role       string `json:"role"`
-	EmailCheck bool   `json:"email_check"`
+	ID              uint   `json:"id" gorm:"primary_key"`
+	Email           string `json:"email"`
+	Password        string `json:"password"`
+	FirstName       string `json:"first_name"`
+	LastName        string `json:"last_name"`
+	Role            string `json:"role"`
+	Faculty         string `json:"faculty" gorm:"default:'Нет информации'"`
+	Group           string `json:"group" gorm:"default:'Нет информации'"`
+	FormOfEducation string `json:"form_of_education" gorm:"default:'Нет информации'"`
+	Level           string `json:"level" gorm:"default:'Нет информации'"`
+	EmailCheck      bool   `json:"email_check"`
 }
 
 type UserRegisterData struct {

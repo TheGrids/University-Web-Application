@@ -27,7 +27,7 @@ func ConnectionDataBase() {
 	}
 
 	// Adding schema to database
-	database.AutoMigrate(&User{}, &Token{}, &EmailCheck{})
+	database.AutoMigrate(&User{}, &EmailCheck{})
 
 	DB = database
 }

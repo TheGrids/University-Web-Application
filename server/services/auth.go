@@ -122,7 +122,7 @@ func CreateToken(user models.User) string {
 //}
 
 // CheckToken Проверка JWT
-func CheckToken(token string, c *gin.Context) (uint, bool) {
+func CheckToken(token string, c *gin.Context) (uint, string, bool) {
 	var user models.User
 
 	type MyCustomClaims struct {
@@ -139,10 +139,10 @@ func CheckToken(token string, c *gin.Context) (uint, bool) {
 
 	if _, ok := tokenParse.Claims.(*MyCustomClaims); ok && tokenParse.Valid && err == nil {
 		c.Header("Role", user.Role)
-		return tokenParse.Claims.(*MyCustomClaims).ID, true
+		return tokenParse.Claims.(*MyCustomClaims).ID, user.Role, true
 	}
 
-	return 0, false
+	return 0, "", false
 }
 
 // Refresh Создание JWT с помощью Refresh токена
@@ -209,7 +209,7 @@ func Verification(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"msg": "Не найден токен."})
 		return
 	}
-	if _, ok := CheckToken(c.Request.Header.Get("Authorization"), c); ok {
+	if _, _, ok := CheckToken(c.Request.Header.Get("Authorization"), c); ok {
 		c.JSON(http.StatusOK, gin.H{"msg": "Успешный успех"})
 	} else {
 		c.JSON(http.StatusBadRequest, gin.H{"msg": "Ваша сессия истекла. Пожалуйста, войдите заново."})
