@@ -138,7 +138,7 @@ func CheckToken(token string, c *gin.Context) (uint, bool) {
 	err := models.DB.Where("id=?", tokenParse.Claims.(*MyCustomClaims).ID).First(&user).Error
 
 	if _, ok := tokenParse.Claims.(*MyCustomClaims); ok && tokenParse.Valid && err == nil {
-		c.Header("Role", user.Role)
+		c.Request.Header.Add("Role", user.Role)
 		return tokenParse.Claims.(*MyCustomClaims).ID, true
 	}
 
@@ -212,6 +212,6 @@ func Verification(c *gin.Context) {
 	if _, ok := CheckToken(c.Request.Header.Get("Authorization"), c); ok {
 		c.JSON(http.StatusOK, gin.H{"msg": "Успешный успех"})
 	} else {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": "Ваша сессия истекла. Подалуйста, войдите заново."})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": "Ваша сессия истекла. Пожалуйста, войдите заново."})
 	}
 }
