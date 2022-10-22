@@ -32,9 +32,6 @@
 
         </div>
     </div>
-
-    {{user}} <br>
-    {{this.$store.getters.GETINFO}}
 </template>
 
 <script>

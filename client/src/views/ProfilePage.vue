@@ -65,7 +65,6 @@
                 </div>
             </div>
         </div>
-        {{this.$store.getters.GETINFO}}
     </div>
 </template>
 
@@ -92,17 +91,22 @@ export default {
             fname: '...',
             lname: '...',
             group: 'ВИАС21',
-            fac: 'Информатика и вычислительная техника',
-            form: 'Очная',
-            level: 'Бакалавр',
-            email: 'dmtr.off.p@gmail.com'
+            fac: '...',
+            form: '...',
+            level: '...',
+            email: '...'
         }
     },
     mounted() {
-        axios.get("https://universityweb.site/api/profile/"+localStorage.getItem('uid')).then(resp => {
+        axios.get("https://universityweb.site/api/profile/"+this.$route.params.uid).then(resp => {
             this.role = resp.data.data.role
             this.fname = resp.data.data.firstName
             this.lname = resp.data.data.lastName
+            this.email = resp.data.data.email
+            this.fac = resp.data.data.faculty
+            this.group = resp.data.data.group
+            this.form = resp.data.data.form_of_education
+            this.level = resp.data.data.level
 
         }).catch(err => {
             console.log(err.response.data.msg);

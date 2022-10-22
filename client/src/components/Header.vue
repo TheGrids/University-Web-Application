@@ -43,7 +43,9 @@
             </div>
         </div>
     </nav>    
-    {{this.$store.getters.GETINFO}} {{this.smth}}
+    <div class="container">
+        {{this.$store.getters.GETINFO}}
+    </div>
 </template>
 <style>
     .c-q {
