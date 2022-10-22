@@ -30,6 +30,11 @@ func main() {
 		//api.POST("/refresh", services.Refresh)
 		api.GET("/profile/:id", services.GetProfile)
 		api.GET("/verification", services.Verification)
+
+		admin := api.Group("/admin")
+		{
+			admin.GET("/profiles", services.GetUsers)
+		}
 	}
 
 	r.Run()
