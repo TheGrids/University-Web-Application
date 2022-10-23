@@ -30,6 +30,11 @@ func main() {
 		//api.POST("/refresh", services.Refresh)
 		api.GET("/profile/:id", services.GetProfile)
 		api.GET("/verification", services.Verification)
+		api.POST("/addnews", services.AddNews)
+		api.GET("/news", services.GetNews)
+		api.GET("/news/:id", services.GetNew)
+		api.DELETE("/deletenews", services.DeleteNews)
+		api.GET("/newssort", services.NewsSort)
 
 		admin := api.Group("/admin")
 		{
