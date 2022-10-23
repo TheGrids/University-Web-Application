@@ -20,6 +20,13 @@ func AddNews(c *gin.Context) {
 		return
 	}
 
+	var user models.User
+
+	if err := models.DB.Where("id=?", id).First(&user).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"msg": "Пользователь не найден."})
+		return
+	}
+
 	var input models.AddNews
 
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -27,7 +34,7 @@ func AddNews(c *gin.Context) {
 		return
 	}
 
-	news := models.News{AuthorId: id, Title: input.Title, Body: input.Body, Tag: input.Tag, Time: time.Now().Unix()}
+	news := models.News{AuthorId: id, AuthorFirstName: user.FirstName, AuthorLastName: user.LastName, Title: input.Title, Body: input.Body, Tag: input.Tag, Time: time.Now().Unix()}
 
 	if err := models.DB.Where("Title=?", input.Title).First(&models.News{}).Error; err == nil {
 		c.JSON(http.StatusNotFound, gin.H{"msg": "Статья с таким заголовком уже есть."})

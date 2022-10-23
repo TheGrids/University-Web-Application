@@ -9,7 +9,6 @@ type Message struct {
 }
 
 type AddMessage struct {
-	AuthorId uint   `json:"authorId" binding:"required"`
-	Title    string `json:"title" binding:"required"`
-	Body     string `json:"body" binding:"required"`
+	Title string `json:"title" binding:"required"`
+	Body  string `json:"body" binding:"required"`
 }
