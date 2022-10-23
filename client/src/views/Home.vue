@@ -56,7 +56,7 @@
                     {{filter}}
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <li><button type="submit" class="dropdown-item" v-on:click="doA('Нет')">Нет</button></li>
+                    <li><button type="submit" class="dropdown-item" v-on:click="doA('Все')">Все</button></li>
                     <li><button type="submit" class="dropdown-item" v-on:click="doA('Социальная жизнь')">Социальная жизнь</button></li>
                     <li><button type="submit" class="dropdown-item" v-on:click="doA('Учебные новости')">Учебные новости</button></li>
                     <li><button type="submit" class="dropdown-item" v-on:click="doA('Жизнь ВУЗа')">Жизнь ВУЗа</button></li>
@@ -123,7 +123,7 @@ export default {
   data: function(){
     return {
         list: [],
-        filter: "Нет",
+        filter: "Все",
         message: '',
         why: '',
         canDel: localStorage.getItem('uid'),
@@ -174,7 +174,7 @@ export default {
     },
     doA(name){
         this.filter = name; 
-        if(this.filter == 'Нет') this.$router.go()
+        if(this.filter == 'Все') this.$router.go()
         let ress = {
             tag: this.filter
         }
@@ -192,7 +192,7 @@ export default {
     }
   },
   mounted() {
-    if(this.filter == 'Нет'){
+    if(this.filter == 'Все'){
         axios.get("https://universityweb.site/api/news", {headers: {'Authorization': localStorage.getItem('accessToken')}}).then(respp => {
             if(respp.status == 200){
                 this.list = respp.data.data;
