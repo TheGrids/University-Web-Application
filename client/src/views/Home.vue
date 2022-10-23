@@ -1,28 +1,68 @@
 <template>
     <div class="container">
-        <!-- <div class="d-flex justify-content-between">
-            <h2 class="mt-4">Связь с ректором</h2>
-        </div> -->
+        <div class="card bg-dark text-white mt-4">
+            <img src="../assets/5.png" class="card-img aa" alt="Stony Beach"/>
+            <div class="card-img-overlay text-center align-middle">
+                <span class="card-titlee"><b>Связь с ректором</b></span>
+                <p class="card-text">
+                    <button type="button" class="btn c-q mt-3   " data-mdb-toggle="modal" data-mdb-target="#exampleModal">Написать</button>
+                </p>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Связь с ректором</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-12">
+                        
+                        <div class="i-title">Заголовок</div>
+                        <div class="form-outline mb-4">
+                            <input type="text" id="form2Example1" v-model="why" class="form-control" autocomplete="off"/>
+                        </div>
+
+                        <div class="i-title">Сообщение</div>
+                        <div class="form-outline mb-4">
+                            <textarea class="form-control" style="min-height: 100px" v-model="message"></textarea>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Отправить</button>
+                </div>
+                </div>
+            </div>
+        </div>
 
         <div class="d-flex justify-content-between">
             <h2 class="mt-4">Новости</h2>
-            
-            <button
-                class="btn c-q dropdown-toggle"
-                style="height: 50%; margin-top: auto;margin-bottom: auto"
-                type="button"
-                id="dropdownMenuButton"
-                data-mdb-toggle="dropdown"
-                aria-expanded="false"
-            >
-                {{filter}}
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li><button type="submit" class="dropdown-item" v-on:click="doA('Нет')">Нет</button></li>
-                <li><button type="submit" class="dropdown-item" v-on:click="doA('Социальная жизнь')">Социальная жизнь</button></li>
-                <li><button type="submit" class="dropdown-item" v-on:click="doA('Учебные новости')">Учебные новости</button></li>
-                <li><button type="submit" class="dropdown-item" v-on:click="doA('Жизнь ВУЗа')">Жизнь ВУЗа</button></li>
-            </ul>
+            <div class="d-flex align-self-center">
+                <h5 style="margin-right: 20px" class="d-flex align-self-center">Фильтр по тегам</h5>
+                <button
+                    class="btn c-q dropdown-toggle"
+                    style="height: 50%"
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-mdb-toggle="dropdown"
+                    aria-expanded="false"
+                >
+                    {{filter}}
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li><button type="submit" class="dropdown-item" v-on:click="doA('Нет')">Нет</button></li>
+                    <li><button type="submit" class="dropdown-item" v-on:click="doA('Социальная жизнь')">Социальная жизнь</button></li>
+                    <li><button type="submit" class="dropdown-item" v-on:click="doA('Учебные новости')">Учебные новости</button></li>
+                    <li><button type="submit" class="dropdown-item" v-on:click="doA('Жизнь ВУЗа')">Жизнь ВУЗа</button></li>
+                </ul>
+            </div>
         </div>
 
         <div class="card mt-4" v-for="(arrays, index) in list">
@@ -49,6 +89,24 @@
 .sss {
     font-size: 12px;
 }
+.card-img {
+    object-position: center center;
+    background-size: cover;  
+}
+.aa {
+    min-height: 150px;
+}
+@media (min-width: 758px) {
+    .card-titlee {
+        font-size: 62px!important;
+    }
+}
+.card-titlee {
+    font-size: 28px;
+}
+.card-title {
+    font-size: 28px;
+}
 </style>
 
 <script>
@@ -59,7 +117,9 @@ export default {
   data: function(){
     return {
         list: [],
-        filter: "Нет"
+        filter: "Нет",
+        message: '',
+        why: ''
     }
   },
   components: {

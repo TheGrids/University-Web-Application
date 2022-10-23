@@ -1,5 +1,5 @@
 <template>
-    <Header  :smth="ok"/>
+    <Header  :smth="ok" :hehe="ook"/>
     <router-view/>
     <notifications />
 </template>
@@ -15,7 +15,8 @@ export default {
     },
     data: function() {
         return {
-            ok: false
+            ok: false,
+            ook: false
         }
     },
     mounted() {
@@ -26,6 +27,7 @@ export default {
                         let us = VueJwtDecode.decode(localStorage.getItem('accessToken'))
                         localStorage.setItem('role', respp.headers['role']);
                         if(respp.headers['role'] == 'admin') this.ok = true
+                        if(respp.headers['role'] == 'teacher') this.ook = true
                         localStorage.setItem('uid', us.userid);
                         localStorage.setItem('accessToken', localStorage.getItem('accessToken'));
                         

@@ -18,6 +18,9 @@
                     <li class="nav-item active">
                         <router-link class="nav-link  text-white" to="/">Главная</router-link>
                     </li>
+                    <li class="nav-item active" v-if="this.smth || this.hehe">
+                        <router-link class="nav-link  text-white" to="/createnews">Опубликовать новость</router-link>
+                    </li>
                     <li class="nav-item active" v-if="this.smth">
                         <router-link class="nav-link  text-white" to="/admin">Админ панель</router-link>
                     </li>
@@ -52,13 +55,16 @@
     .bb {
         background-color: #3F3558;
     }
+    .nav-item {
+        margin-right: 10px;
+    }
 </style>
 <script>
 import axios from 'axios'
 
 export default {
     name: 'Header',
-    props: ['smth'],
+    props: ['smth', 'hehe'],
     data: function( ){
         return {
             admin: false
