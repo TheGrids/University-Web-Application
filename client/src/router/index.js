@@ -7,6 +7,7 @@ import LoginPage from '../views/LoginPage.vue'
 import AdminPanel from '../views/AdminPanel.vue'
 import PageNotFound from '../views/PageNotFound.vue'
 import ProfilePage from '../views/ProfilePage.vue'
+import createNews from '../views/CreateNews.vue'
 import store from '../store'
 
 let authToken = localStorage.getItem('accessToken');
@@ -28,6 +29,16 @@ let managerAdminGuard = function(to, from, next) {
     if(!authToken) {
         next({name: 'LoginPage'})
     }else if(localStorage.getItem('role') != 'admin'){
+        next( { name: 'Home' })
+    }else {
+        next()
+    }
+}
+
+let managerNewsGuard = function(to, from, next) {
+    if(!authToken) {
+        next({name: 'LoginPage'})
+    }else if(localStorage.getItem('role') != 'admin' && localStorage.getItem('role') != 'teacher'){
         next( { name: 'Home' })
     }else {
         next()
@@ -58,6 +69,12 @@ const routes = [
         path: '/success',
         name: 'success',
         component: success
+    },
+    {
+        path: '/createnews',
+        name: 'createNews',
+        component: createNews,
+        beforeEnter: managerNewsGuard
     },
     {
         path: '/activate/:uuid',
