@@ -45,7 +45,6 @@
         <div class="d-flex justify-content-between">
             <h2 class="mt-4">Новости</h2>
             <div class="d-flex align-self-center">
-                <h5 style="margin-right: 20px" class="d-flex align-self-center">Фильтр по тегам</h5>
                 <button
                     class="btn c-q dropdown-toggle"
                     style="height: 50%"
