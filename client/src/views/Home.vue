@@ -36,7 +36,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Отмена</button>
-                    <button type="submit" class="btn btn-primary" v-on:click="sendMess()">Отправить</button>
+                    <button type="submit" class="btn btn-primary" id="OHSUPERID" v-on:click="sendMess()">Отправить</button>
                 </div>
                 </div>
             </div>
@@ -147,7 +147,9 @@ export default {
                     type: 'success',
                     text: 'Сообщение успешно отправлено'
                 })
-                this.$router.push('/')
+                setTimeout(() => {
+                    this.$router.go()
+                }, 1000);
             }
         }).catch(err => {
             this.$notify({
