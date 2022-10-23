@@ -102,5 +102,7 @@ func ChangeData(c *gin.Context) {
 		return
 	}
 
-	models.DB.Where("id=?", c.Param("id")).First(&models.User{}).Updates(input)
+	models.DB.Model(&user).Updates(input)
+
+	c.JSON(http.StatusOK, gin.H{"msg": "Успешно изменено"})
 }
