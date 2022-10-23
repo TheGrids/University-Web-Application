@@ -34,7 +34,10 @@ func main() {
 		api.GET("/news", services.GetNews)
 		api.GET("/news/:id", services.GetNew)
 		api.DELETE("/deletenews", services.DeleteNews)
-		api.GET("/newssort", services.NewsSort)
+		api.POST("/newssort", services.NewsSort)
+		api.POST("/addmessage", services.AddMessage)
+		api.GET("/messages", services.GetMessages)
+		api.DELETE("/deletemessage", services.DeleteMessage)
 
 		admin := api.Group("/admin")
 		{

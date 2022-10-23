@@ -46,7 +46,7 @@ func GetNews(c *gin.Context) {
 		return
 	}
 
-	if _, role, ok := CheckToken(token, c); !ok || (role != "admin" && role != "teacher") {
+	if _, _, ok := CheckToken(token, c); !ok {
 		c.JSON(http.StatusBadRequest, gin.H{"msg": "Недостаточно прав."})
 		return
 	}
@@ -65,7 +65,7 @@ func GetNew(c *gin.Context) {
 		return
 	}
 
-	if _, role, ok := CheckToken(token, c); !ok || (role != "admin" && role != "teacher") {
+	if _, _, ok := CheckToken(token, c); !ok {
 		c.JSON(http.StatusBadRequest, gin.H{"msg": "Недостаточно прав."})
 		return
 	}
@@ -115,7 +115,7 @@ func NewsSort(c *gin.Context) {
 		return
 	}
 
-	if _, role, ok := CheckToken(token, c); !ok || role != "admin" {
+	if _, _, ok := CheckToken(token, c); !ok {
 		c.JSON(http.StatusBadRequest, gin.H{"msg": "Недостаточно прав."})
 		return
 	}
@@ -130,7 +130,7 @@ func NewsSort(c *gin.Context) {
 	var news []models.News
 
 	if input.Tag == "Учебные новости" || input.Tag == "Социальная жизнь" || input.Tag == "Жизнь ВУЗа" {
-		models.DB.Where("tag", input.Tag).Order("time DESC, id DESC").Find(&news)
+		models.DB.Where("tag", input.Tag).Find(&news).Order("time DESC, id DESC")
 		c.JSON(http.StatusOK, gin.H{"data": news})
 		return
 	}
