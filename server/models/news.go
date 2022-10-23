@@ -10,8 +10,7 @@ type News struct {
 }
 
 type AddNews struct {
-	AuthorId uint   `json:"authorId" binding:"required"`
-	Title    string `json:"title" binding:"required"`
-	Body     string `json:"body" binding:"required"`
-	Tag      string `json:"tag" binding:"required"`
+	Title string `json:"title" binding:"required"`
+	Body  string `json:"body" binding:"required"`
+	Tag   string `json:"tag" binding:"required"`
 }
