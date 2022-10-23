@@ -35,7 +35,7 @@
                         </div>
                     </td>
                     <td >
-                        <button
+                        <button v-if="arrays.id != idd"
                             class="btn c-q dropdown-toggle"
                             type="button"
                             id="dropdownMenuButton"
@@ -53,7 +53,7 @@
                     <td>
                     <button type="submit" class="btn c-q btn-floating"  data-mdb-toggle="modal" :data-mdb-target="`#exampleModal`+arrays.id" style="margin-bottom: 5px; margin-right: 5px;" v-on:click=""><i class="fas fa-edit"></i></button>
 
-                    <button type="submit" class="btn c-q btn-floating bg-danger"  style=" margin-bottom: 5px" v-on:click="deletee(arrays.id)"><i class="fas fa-trash"></i></button>
+                    <button v-if="arrays.id != idd" type="submit" class="btn c-q btn-floating bg-danger"  style=" margin-bottom: 5px" v-on:click="deletee(arrays.id)"><i class="fas fa-trash"></i></button>
                     </td>
 
                     <!-- Modal -->
@@ -134,7 +134,7 @@
             </thead>
             <tbody>
                 <tr v-for="(arrays, index) in news">
-                    <td>
+                    <td style="max-width: 500px">
                         <div class="d-flex align-items-center">
                         <div class="ms-3">
                             <p class="fw-bold mb-1">{{arrays.title}}</p>
@@ -150,6 +150,38 @@
             </tbody>
             </table>
         </div>
+
+        <h4 class="mt-4">Сообщения ректору</h4>
+        <div class="table-responsive mt-4">
+
+            <table class="table table-striped align-middle mb-0 bg-white mt-2">
+            <thead class="bg-white">
+                <tr>
+                <th>Сообщение</th>
+                <th>Действие</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(arrays, index) in messes">
+                    <td style="max-width: 500px">
+                        <div class="d-flex align-items-center">
+                        <div class="ms-3" style="width: 100%">
+                            <p class="fw-bold mb-1">{{arrays.title}}</p>
+                            <p class="fw-bold mb-1">{{arrays.body}}</p>
+                            <p class="text-muted mb-0">{{new Date(arrays.time * 1000).toLocaleDateString()}} {{new Date(arrays.time * 1000).toLocaleTimeString()}}</p>
+                        </div>
+                        </div>
+                    </td>
+                    <td>
+
+                    <button type="submit" class="btn c-q btn-floating bg-danger"  style=" margin-bottom: 5px" v-on:click="deleteMessage(arrays.id)"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+
+
     </div>
 </template>
 
@@ -169,7 +201,9 @@ export default {
                 lastName: '',
                 firstName: ''
             },
-            news: []
+            idd: localStorage.getItem('uid'),
+            news: [],
+            messes: []
         }
     },
     methods: {
@@ -218,6 +252,19 @@ export default {
                 console.log(err);
             })
         },
+        deleteMessage(uid) {
+            let req = {
+                id: uid
+            }
+
+            axios.delete("https://universityweb.site/api/deletemessage", {headers: {'Authorization': localStorage.getItem('accessToken')}, data: req}).then(resp => {
+                if(resp.status == 200){
+                    this.$router.go()
+                }
+            }).catch(err => {
+                console.log(err);
+            })
+        },
         changeRole(uid, rolee){ 
             let req = {
                 id: uid,
@@ -245,6 +292,18 @@ export default {
         axios.get("https://universityweb.site/api/news", {headers: {'Authorization': localStorage.getItem('accessToken')}}).then(respp => {
             if(respp.status == 200){
                 this.news = respp.data.data;
+            }
+        }).catch(err => {
+            this.$notify({
+                title: 'Ошибка',
+                type: 'error',
+                text: err.response.data.msg
+            })
+        })
+
+        axios.get("https://universityweb.site/api/messages", {headers: {'Authorization': localStorage.getItem('accessToken')}}).then(respp => {
+            if(respp.status == 200){
+                this.messes = respp.data.data;
             }
         }).catch(err => {
             this.$notify({

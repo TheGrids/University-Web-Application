@@ -36,7 +36,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Отмена</button>
-                    <button type="submit" class="btn btn-primary">Отправить</button>
+                    <button type="submit" class="btn btn-primary" v-on:click="sendMess()">Отправить</button>
                 </div>
                 </div>
             </div>
@@ -71,7 +71,7 @@
                 <p class="card-text">{{arrays.body}}</p>
             </div>
             <div class="card-footer text-muted">
-                <i class="far fa-calendar-plus"></i> {{new Date(arrays.time * 1000).toLocaleDateString()}} {{new Date(arrays.time * 1000).toLocaleTimeString()}}
+                <i class="far fa-calendar-plus"></i> {{new Date(arrays.time * 1000).toLocaleDateString()}} {{new Date(arrays.time * 1000).toLocaleTimeString()}} | Автор: <router-link class="text-muted" :to="`/profile/`+arrays.authorId">{{arrays.authorFirstName}} {{arrays.authorLastName}}</router-link>
             </div>
         </div>
 
@@ -125,6 +125,29 @@ export default {
     
   },
   methods: {
+    sendMess(){
+        let res = {
+            title: this.why,
+            body: this.message
+        }
+
+        axios.post("https://universityweb.site/api/addmessage", res, {headers: {'Authorization': localStorage.getItem('accessToken')}}).then(respp => {
+            if(respp.status == 200){
+                this.$notify({
+                    title: 'Успех',
+                    type: 'success',
+                    text: 'Сообщение успешно отправлено'
+                })
+                this.$router.push('/')
+            }
+        }).catch(err => {
+            this.$notify({
+                title: 'Ошибка',
+                type: 'error',
+                text: err.response.data.msg
+            })
+        })
+    },
     doA(name){
         this.filter = name; 
         if(this.filter == 'Нет') this.$router.go()

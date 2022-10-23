@@ -44,7 +44,7 @@ export default {
         return {
             titlee: '',
             bodyy: '',
-            tagg: 'Выбор тега'
+            tagg: 'Социальная жизнь'
         }
     },
     methods: {
@@ -68,7 +68,7 @@ export default {
                 this.$notify({
                     title: 'Ошибка',
                     type: 'error',
-                    text: err.response.data.msg
+                    text: "Какая-то ошибка..."
                 })
             })
         }

@@ -58,7 +58,7 @@
                                 <p class="card-text">{{email}}</p>
                             </div>
                             <div class="col-6">
-                                <div class="i-title">ФИО</div>
+                                <div class="i-title">Имя Фамилия</div>
                                 <p class="card-text">{{fname}} {{lname}}</p>    
                             </div>
                         </div>
