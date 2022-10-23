@@ -20,7 +20,7 @@ func GetUsers(c *gin.Context) {
 
 	var users []models.User
 
-	models.DB.Find(&users)
+	models.DB.Order("id DESC").Find(&users)
 
 	c.JSON(http.StatusOK, gin.H{"data": users})
 }
