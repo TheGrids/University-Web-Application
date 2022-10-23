@@ -65,7 +65,14 @@
         </div>
 
         <div class="card mt-4" v-for="(arrays, index) in list">
-            <h5 class="card-header"><button type="button" class="btn btn-outline-info btn-rounded" data-mdb-ripple-color="dark"><span class="sss">{{arrays.tag}}</span></button></h5>
+            <h5 class="card-header d-flex justify-content-between">
+                <button type="button" class="btn btn-outline-info btn-rounded" data-mdb-ripple-color="dark">
+                    <span class="sss">{{arrays.tag}}</span>
+                </button> 
+                <button v-if="canDel == arrays.authorId || role == 'admin'" type="submit" class="btn c-q btn-floating bg-danger"  style=" margin-bottom: 5px" v-on:click="deleteMessage(arrays.id)">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </h5>
             <div class="card-body">
                 <h5 class="card-title">{{arrays.title}}</h5>
                 <p class="card-text">{{arrays.body}}</p>
@@ -118,7 +125,9 @@ export default {
         list: [],
         filter: "Нет",
         message: '',
-        why: ''
+        why: '',
+        canDel: localStorage.getItem('uid'),
+        role: localStorage.getItem('role'),
     }
   },
   components: {
@@ -146,6 +155,19 @@ export default {
                 type: 'error',
                 text: err.response.data.msg
             })
+        })
+    },
+    deleteMessage(uid) {
+        let req = {
+            id: uid
+        }
+
+        axios.delete("https://universityweb.site/api/deletenews", {headers: {'Authorization': localStorage.getItem('accessToken')}, data: req}).then(resp => {
+            if(resp.status == 200){
+                this.$router.go()
+            }
+        }).catch(err => {
+            console.log(err);
         })
     },
     doA(name){
