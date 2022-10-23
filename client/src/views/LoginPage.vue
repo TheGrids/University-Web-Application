@@ -6,15 +6,15 @@
                     <h2 class="text-center">Авторизация</h2>
 
                     <!-- Email input -->
+                    <div class="i-title">Email</div>
                     <div class="form-outline mb-4">
                         <input type="email" id="form2Example1" class="form-control" v-model="user.email"/>
-                        <label class="form-label" for="form2Example1">Электронная почта</label>
                     </div>
                 
                     <!-- Password input -->
+                    <div class="i-title">Пароль</div>
                     <div class="form-outline mb-4">
                         <input type="password" id="form2Example2" class="form-control" v-model="user.password"/>
-                        <label class="form-label" for="form2Example2">Пароль</label>
                     </div>
                 
                     <!-- 2 column grid layout for inline styling -->

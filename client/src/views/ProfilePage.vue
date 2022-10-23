@@ -1,5 +1,6 @@
 <template>
     <div class="container mt-4">
+        <h2 class="mt-4 mb-4">Личный кабинет</h2>
         <div class="row">
             <div class="col-12 col-sm-4 col-md-3 mb-4">
                 <div class="card text-center">

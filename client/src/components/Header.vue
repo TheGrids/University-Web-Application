@@ -12,7 +12,7 @@
             >
             <i class="fas fa-bars"></i>
             </button>
-            <div class="collapse navbar-collapse justify-content-between" id="navbarCenteredExample">
+            <div class="collapse navbar-collapse justify-content-between" style="margin-left: 10px" id="navbarCenteredExample">
                 <!-- Left links -->
                 <ul class="navbar-nav mb-2 mb-lg-0">
                     <li class="nav-item active">
@@ -23,7 +23,7 @@
                     </li>
                 </ul>
 
-                <ul v-if="this.$store.getters.GETSTATUS" class="navbar-nav mb-2 mb-lg-0">
+                <ul v-if="this.$store.getters.GETSTATUS" class="navbar-nav mb-2 mb-lg-0 d-flex flex-row ">
                     <li class="nav-item" style="margin-right: 8px">
                         <router-link style="color: white" :to="`/profile/`+this.$store.getters.GETINFO.user.userid">
                             <button type="button" class="btn c-q btn-floating">

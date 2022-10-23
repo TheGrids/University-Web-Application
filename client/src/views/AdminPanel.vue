@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+        <h2 class="mt-4 mb-4">Админ панель</h2>
         <div class="table-responsive">
 
             <table class="table table-striped align-middle mb-0 bg-white mt-2">
@@ -48,12 +49,13 @@
                         </ul>
                     </td>
                     <td>
-                    <button type="submit" class="btn c-q btn-floating"  data-mdb-toggle="modal" data-mdb-target="#exampleModal" :id="`editByID`+arrays.id" style="margin-bottom: 5px; margin-right: 5px;" v-on:click=""><i class="fas fa-edit"></i></button>
+                    <button type="submit" class="btn c-q btn-floating"  data-mdb-toggle="modal" :data-mdb-target="`#exampleModal`+arrays.id" style="margin-bottom: 5px; margin-right: 5px;" v-on:click=""><i class="fas fa-edit"></i></button>
+
                     <button type="submit" class="btn c-q btn-floating bg-danger"  style=" margin-bottom: 5px" v-on:click="deletee(arrays.id)"><i class="fas fa-trash"></i></button>
                     </td>
 
                     <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" v-for="(arr, index) in datas" :id="`exampleModal`+arr.id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                             <div class="modal-header">
@@ -65,9 +67,9 @@
                                     <h5>Личная информация</h5>
                                     <div class="col-12 col-md-6">
 
-                                         <div class="i-title">Имя</div>
+                                        <div class="i-title">Имя</div>
                                         <div class="form-outline mb-4">
-                                            <input type="text" id="form2Example1" v-model="change.first_name" class="form-control" autocomplete="off"/>
+                                            <input type="text" id="form2Example1" v-model="change.firstName" class="form-control" autocomplete="off"/>
                                         </div>
 
                                     </div>
@@ -75,7 +77,7 @@
                                     <div class="col-12 col-md-6">
                                         <div class="i-title">Фамилия</div>
                                         <div class="form-outline mb-4">
-                                            <input type="text" id="form2Example1" v-model="change.last_name" class="form-control" autocomplete="off"/>
+                                            <input type="text" id="form2Example1" v-model="change.lastName" class="form-control" autocomplete="off"/>
                                         </div>
 
                                     </div>
@@ -104,10 +106,11 @@
                                         </div>
                                     </div>
                                 </div>
+                                <span>Оставьте поле пустым, чтобы не изменять его.</span>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Закрыть</button>
-                                <button type="submit" class="btn btn-primary" v-on:click="ss(arrays.id)">Сохранить</button>
+                                <button type="submit" class="btn btn-primary" v-on:click="ss(arr.id)">Сохранить</button>
                             </div>
                             </div>
                         </div>
@@ -145,17 +148,13 @@ export default {
                 group: this.change.group,
                 form_of_education: this.change.form_of_education,
                 level: this.change.level,
-                lastName: this.change.lastName,
-                firstName: this.change.firstName
+                last_name: this.change.lastName,
+                first_name: this.change.firstName
             }
 
             axios.put("https://universityweb.site/api/admin/changedata", req,{headers: {'Authorization': localStorage.getItem('accessToken')}}).then(resp => {
                 if(resp.status == 200){
-                    this.$notify({
-                        title: 'Успех',
-                        type: 'success',
-                        text: resp.data.msg
-                    })
+                    this.$router.go()
                 }
             }).catch(err => {
                 console.log(err);

@@ -6,40 +6,40 @@
                     <h2 class="text-center">Регистрация</h2>
 
                     <!-- Email input -->
+                    <div class="i-title">Email</div>
                     <div class="form-outline mb-4">
                         <input type="email" id="form2Example1" class="form-control" autocomplete="off" v-model="user.email"/>
-                        <label class="form-label" for="form2Example1">Электронная почта</label>
                     </div>
                 
                     <!-- Password input -->
+                    <div class="i-title">Пароль</div>
                     <div class="form-outline mb-4">
                         <input type="password" id="form2Example6" class="form-control" v-model="user.password"/>
-                        <label class="form-label" for="form2Example6">Пароль</label>
                     </div>
 
                     <!-- Confirm Password input -->
+                    <div class="i-title">Подтвердите пароль</div>
                     <div class="form-outline mb-4">
                         <input type="password" id="form2Example8" class="form-control" v-model="user.password2"/>
-                        <label class="form-label" for="form2Example8">Подтвердите пароль</label>
                     </div>
 
                     <!-- First Name input -->
+                    <div class="i-title">Имя</div>
                     <div class="form-outline mb-4">
                         <input type="text" id="form2Example3" class="form-control" autocomplete="off" v-model="user.first_name"/>
-                        <label class="form-label" for="form2Example3">Имя</label>
                     </div>
 
                     <!-- Last Name input -->
+                    <div class="i-title">Фамилия</div>
                     <div class="form-outline mb-4">
                         <input type="text" id="form2Example4" class="form-control" autocomplete="off" v-model="user.last_name"/>
-                        <label class="form-label" for="form2Example4">Фамилия</label>
                     </div>
 
                     <div class="form-check">
                         <input class="form-check-input" name="sm" type="radio" value="student" id="form1212" v-model="user.role"/>
                         <label class="form-check-label" for="form1212">Я студент</label>
                     </div>
-
+                    
                     <div class="form-check">
                         <input class="form-check-input" name="sm" type="radio" value="teacher" id="form1212"  v-model="user.role"/>
                         <label class="form-check-label" for="form1212">Я преподаватель</label>
