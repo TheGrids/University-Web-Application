@@ -26,7 +26,7 @@
                     </div>
                 
                     <!-- Submit button -->
-                    <button type="submit" class="btn btn-primary btn-block mb-4" v-on:click="login()">Авторизоваться</button>
+                    <button type="submit" class="btn c-q btn-block mb-4" v-on:click="login()">Авторизоваться</button>
                 </div>
             </div>
 
@@ -53,8 +53,6 @@ export default {
         login() {
             if(this.user.email && this.user.password){
                 axios.post("https://universityweb.site/api/login", this.user).then(resp => {
-                    console.log("OKAY 200")
-                    console.log(resp.data.access);
 
                     axios.get("https://universityweb.site/api/verification", {headers: {'Authorization': resp.data.access}}).then(respp => {
                         if(respp.status == 200){

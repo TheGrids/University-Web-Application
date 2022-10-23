@@ -32,16 +32,11 @@ export default {
                         this.$store.commit('loginSuccess', us)
                     }
                 }).catch(err => {
-                    console.log(err.response.data.msg);
                     localStorage.removeItem('accessToken');
                     localStorage.removeItem('uid');
                     localStorage.removeItem('role');
                 })
-            }else {
-                console.log("NO TOKEN")
             }
-        }else{
-            console.log("NO ALL")
         }
     }
 }

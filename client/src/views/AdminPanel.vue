@@ -33,7 +33,7 @@
                     </td>
                     <td >
                         <button
-                            class="btn btn-primary dropdown-toggle"
+                            class="btn c-q dropdown-toggle"
                             type="button"
                             id="dropdownMenuButton"
                             data-mdb-toggle="dropdown"
@@ -48,8 +48,8 @@
                         </ul>
                     </td>
                     <td>
-                    <button type="submit" class="btn c-q btn-floating" style="margin-right: 5px; margin-bottom: 5px" v-on:click="deletee(arrays.id)"><i class="fas fa-trash"></i></button>
-                    <button type="submit" class="btn c-q btn-floating" data-mdb-toggle="modal" data-mdb-target="#exampleModal" :id="`editByID`+arrays.id" style="margin-bottom: 5px" v-on:click=""><i class="fas fa-edit"></i></button>
+                    <button type="submit" class="btn c-q btn-floating"  data-mdb-toggle="modal" data-mdb-target="#exampleModal" :id="`editByID`+arrays.id" style="margin-bottom: 5px; margin-right: 5px;" v-on:click=""><i class="fas fa-edit"></i></button>
+                    <button type="submit" class="btn c-q btn-floating bg-danger"  style=" margin-bottom: 5px" v-on:click="deletee(arrays.id)"><i class="fas fa-trash"></i></button>
                     </td>
 
                     <!-- Modal -->
@@ -106,7 +106,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Закрыть</button>
                                 <button type="submit" class="btn btn-primary" v-on:click="ss(arrays.id)">Сохранить</button>
                             </div>
                             </div>
@@ -165,7 +165,7 @@ export default {
             let req = {
                 id: uid
             }
-            console.log(req)
+
             axios.delete("https://universityweb.site/api/admin/person/delete", {headers: {'Authorization': localStorage.getItem('accessToken')}, data: req}).then(resp => {
                 if(resp.status == 200){
                     this.$router.go()
@@ -179,7 +179,7 @@ export default {
                 id: uid,
                 role: rolee,
             }
-            console.log(req)
+
             axios.put("https://universityweb.site/api/admin/changerole", req, {headers: {'Authorization': localStorage.getItem('accessToken')}}).then(resp => {
                 if(resp.status == 200){
                     this.$router.go()
@@ -193,7 +193,6 @@ export default {
         axios.get("https://universityweb.site/api/admin/profiles", {headers: {'Authorization': localStorage.getItem('accessToken')}}).then(respp => {
             if(respp.status == 200){
                 this.datas = respp.data.data;
-                console.log(this.datas[0])
             }
         }).catch(err => {
             console.log(err.response.data.msg);

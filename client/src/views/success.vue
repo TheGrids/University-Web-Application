@@ -1,6 +1,7 @@
 <template>
-    <div class="container">
-        <h1>Пожайлуйста, подтвердите почту!!!!!!!!!!!!</h1>
+    <div class="container text-center mt-5">
+        <div style="font-size: 42px">Успешно</div>
+        <p>Пожайлуйста, подтвердите почту!</p>
     </div>
 </template>
 

@@ -1,7 +1,6 @@
 <template>
     <div class="container">
-        HOME PAGE<br>
-        {{this.$store.getters.GETINFO.user.userid}}<br>
+        HOME PAGE
     </div>
 </template>
 

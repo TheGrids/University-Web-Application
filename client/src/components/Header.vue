@@ -42,10 +42,7 @@
                 </ul>
             </div>
         </div>
-    </nav>    
-    <div class="container">
-        {{this.$store.getters.GETINFO}}
-    </div>
+    </nav>
 </template>
 <style>
     .c-q {

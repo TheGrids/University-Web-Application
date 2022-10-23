@@ -1,6 +1,7 @@
 <template>
-    <div class="container">
-        <h1>404</h1>
+    <div class="container text-center mt-5">
+        <div style="font-size: 42px">404</div>
+        <p>Страница не найдена!</p>
     </div>
 </template>
 

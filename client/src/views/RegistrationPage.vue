@@ -36,13 +36,13 @@
                     </div>
 
                     <div class="form-check">
-                        <input class="form-check-input" name="sm" type="radio" value="student" id="form1Example3" v-model="user.role"/>
-                        <label class="form-check-label" for="form1Example3">Я студент</label>
+                        <input class="form-check-input" name="sm" type="radio" value="student" id="form1212" v-model="user.role"/>
+                        <label class="form-check-label" for="form1212">Я студент</label>
                     </div>
 
                     <div class="form-check">
-                        <input class="form-check-input" name="sm" type="radio" value="teacher" id="form1Example3"  v-model="user.role"/>
-                        <label class="form-check-label" for="form1Example3">Я преподаватель</label>
+                        <input class="form-check-input" name="sm" type="radio" value="teacher" id="form1212"  v-model="user.role"/>
+                        <label class="form-check-label" for="form1212">Я преподаватель</label>
                     </div>
                     <div class="row mt-2">
                         <div class="col">
@@ -51,7 +51,7 @@
                         </div>
                     </div>
                     <!-- Submit button -->
-                    <button type="submit" class="btn btn-primary btn-block mt-2" v-on:click="register()">Зарегистрироваться</button>
+                    <button type="submit" class="btn c-q btn-block mt-2" v-on:click="register()">Зарегистрироваться</button>
                 </div>
             </div>
 
@@ -89,9 +89,6 @@ export default {
             if(this.user.email && this.user.password && this.user.first_name && this.user.last_name){
                 if(this.user.password === this.user.password2){
                     axios.post("https://universityweb.site/api/register", this.user).then(resp => {
-                        console.log("OKAY 200")
-                        console.log(resp);
-
                         this.$notify({
                             title: 'Успех',
                             type: 'success',
@@ -99,7 +96,6 @@ export default {
                         })
                         this.$router.push('/success')
                     }).catch(err => {
-                        console.log(err.response.data.msg);
                         this.$notify({
                             title: 'Ошибка',
                             type: 'error',
