@@ -47,17 +47,6 @@ func AddNews(c *gin.Context) {
 }
 
 func GetNews(c *gin.Context) {
-	token := c.Request.Header.Get("Authorization")
-	if token == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": "Не найден токен."})
-		return
-	}
-
-	if _, _, ok := CheckToken(token, c); !ok {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": "Недостаточно прав."})
-		return
-	}
-
 	var news []models.News
 
 	models.DB.Order("time DESC, id DESC").Find(&news)
@@ -66,17 +55,6 @@ func GetNews(c *gin.Context) {
 }
 
 func GetNew(c *gin.Context) {
-	token := c.Request.Header.Get("Authorization")
-	if token == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": "Не найден токен."})
-		return
-	}
-
-	if _, _, ok := CheckToken(token, c); !ok {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": "Недостаточно прав."})
-		return
-	}
-
 	var news models.News
 	if err := models.DB.Where("id=?", c.Param("id")).First(&news).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"msg": "Новость не найдена"})
@@ -116,17 +94,6 @@ func DeleteNews(c *gin.Context) {
 }
 
 func NewsSort(c *gin.Context) {
-	token := c.Request.Header.Get("Authorization")
-	if token == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": "Не найден токен."})
-		return
-	}
-
-	if _, _, ok := CheckToken(token, c); !ok {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": "Недостаточно прав."})
-		return
-	}
-
 	var input models.News
 
 	if err := c.ShouldBindJSON(&input); err != nil {
