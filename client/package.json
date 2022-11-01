@@ -1,5 +1,5 @@
 {
-  "name": "client",
+  "name": "uwa-v2",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,11 +7,9 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "@kyvg/vue3-notification": "^2.4.1",
     "axios": "^1.1.3",
     "core-js": "^3.6.5",
     "vue": "^3.0.0",
-    "vue-jwt-decode": "^0.1.0",
     "vue-router": "^4.0.0-0",
     "vuex": "^4.0.0-0"
   },
