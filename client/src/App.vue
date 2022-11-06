@@ -1,44 +1,29 @@
 <template>
-    <Header  :smth="ok" :hehe="ook"/>
+    <Header />
     <router-view/>
-    <notifications />
 </template>
+
+<style>
+
+</style>
 
 <script>
 import Header from './components/Header.vue'
-import VueJwtDecode from 'vue-jwt-decode'
 import axios from 'axios'
-
+    
 export default {
     components: {
         Header
     },
-    data: function() {
-        return {
-            ok: false,
-            ook: false
-        }
-    },
     mounted() {
-        if(!this.$store.getters.GETSTATUS){
-            if(localStorage.getItem('accessToken')){
-                axios.get("https://universityweb.site/api/verification", {headers: {'Authorization': localStorage.getItem('accessToken')}}).then(respp => {
-                    if(respp.status == 200){
-                        let us = VueJwtDecode.decode(localStorage.getItem('accessToken'))
-                        localStorage.setItem('role', respp.headers['role']);
-                        if(respp.headers['role'] == 'admin') this.ok = true
-                        if(respp.headers['role'] == 'teacher') this.ook = true
-                        localStorage.setItem('uid', us.userid);
-                        localStorage.setItem('accessToken', localStorage.getItem('accessToken'));
-                        
-                        this.$store.commit('loginSuccess', us)
-                    }
-                }).catch(err => {
-                    localStorage.removeItem('accessToken');
-                    localStorage.removeItem('uid');
-                    localStorage.removeItem('role');
-                })
-            }
+        if(localStorage.getItem('accessToken')){
+            axios.get("https://universityweb.site/api/verification", {headers: {'Authorization': localStorage.getItem('accessToken')}}).then(resp => {
+                this.$store.commit('loginSuccess', {access: localStorage.getItem('accessToken'), role: resp.headers['role']})
+            }).catch(err => {
+                this.$store.dispatch('logout')
+            })
+        }else{
+            this.$store.dispatch('logout')
         }
     }
 }

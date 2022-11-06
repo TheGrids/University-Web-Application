@@ -1,4 +1,4 @@
-# client
+# uwa-v2
 
 ## Project setup
 ```

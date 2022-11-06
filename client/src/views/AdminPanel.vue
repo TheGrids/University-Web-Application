@@ -35,8 +35,8 @@
                         </div>
                     </td>
                     <td >
-                        <button v-if="arrays.id != idd"
-                            class="btn c-q dropdown-toggle"
+                        <button
+                            class="btn btn-info dropdown-toggle"
                             type="button"
                             id="dropdownMenuButton"
                             data-mdb-toggle="dropdown"
@@ -51,9 +51,9 @@
                         </ul>
                     </td>
                     <td>
-                    <button type="submit" class="btn c-q btn-floating"  data-mdb-toggle="modal" :data-mdb-target="`#exampleModal`+arrays.id" style="margin-bottom: 5px; margin-right: 5px;" v-on:click=""><i class="fas fa-edit"></i></button>
+                    <button type="submit" class="btn btn-info btn-floating"  data-mdb-toggle="modal" :data-mdb-target="`#exampleModal`+arrays.id" style="margin-bottom: 5px; margin-right: 5px;" v-on:click=""><i class="fas fa-edit"></i></button>
 
-                    <button v-if="arrays.id != idd" type="submit" class="btn c-q btn-floating bg-danger"  style=" margin-bottom: 5px" v-on:click="deletee(arrays.id)"><i class="fas fa-trash"></i></button>
+                    <button type="submit" class="btn text-white btn-floating bg-danger"  style=" margin-bottom: 5px" v-on:click="deletee(arrays.id)"><i class="fas fa-trash"></i></button>
                     </td>
 
                     <!-- Modal -->
@@ -144,7 +144,7 @@
                     </td>
                     <td>
 
-                    <button type="submit" class="btn c-q btn-floating bg-danger"  style=" margin-bottom: 5px" v-on:click="deleteNews(arrays.id)"><i class="fas fa-trash"></i></button>
+                    <button type="submit" class="btn text-white btn-floating bg-danger"  style=" margin-bottom: 5px" v-on:click="deleteNews(arrays.id)"><i class="fas fa-trash"></i></button>
                     </td>
                 </tr>
             </tbody>
@@ -174,7 +174,7 @@
                     </td>
                     <td>
 
-                    <button type="submit" class="btn c-q btn-floating bg-danger"  style=" margin-bottom: 5px" v-on:click="deleteMessage(arrays.id)"><i class="fas fa-trash"></i></button>
+                    <button type="submit" class="btn text-white btn-floating bg-danger"  style=" margin-bottom: 5px" v-on:click="deleteMessage(arrays.id)"><i class="fas fa-trash"></i></button>
                     </td>
                 </tr>
             </tbody>
@@ -190,7 +190,7 @@ import axios from 'axios'
 
 export default {
     name: 'AdminPanel',
-    data: function() {
+    data() {
         return {
             datas: [],
             change: {
@@ -201,12 +201,85 @@ export default {
                 lastName: '',
                 firstName: ''
             },
-            idd: localStorage.getItem('uid'),
             news: [],
             messes: []
         }
     },
     methods: {
+        getMessages() {
+            axios.get("https://universityweb.site/api/messages", {headers: {'Authorization': localStorage.getItem('accessToken')}}).then(respp => {
+                if(respp.status == 200){
+                    this.messes = respp.data.data;
+                }
+            }).catch(err => {
+                this.$notify({
+                    title: 'Ошибка',
+                    type: 'error',
+                    text: err.response.data.msg
+                })
+            })
+        },
+        deleteMessage(uid) {
+            let req = {
+                id: uid
+            }
+
+            axios.delete("https://universityweb.site/api/deletemessage", {headers: {'Authorization': localStorage.getItem('accessToken')}, data: req}).then(resp => {
+                if(resp.status == 200){
+                    this.getMessages()
+                }
+            }).catch(err => {
+                console.log(err);
+            })
+        },
+        getNews() {
+            axios.get("https://universityweb.site/api/news", {headers: {'Authorization': localStorage.getItem('accessToken')}}).then(respp => {
+                if(respp.status == 200){
+                    this.news = respp.data.data;
+                }
+            }).catch(err => {
+                this.$notify({
+                    title: 'Ошибка',
+                    type: 'error',
+                    text: err.response.data.msg
+                })
+            })
+        },
+        deleteNews(uid) {
+            let req = {
+                id: uid
+            }
+
+            axios.delete("https://universityweb.site/api/deletenews", {headers: {'Authorization': localStorage.getItem('accessToken')}, data: req}).then(resp => {
+                if(resp.status == 200){
+                    this.getNews()
+                }
+            }).catch(err => {
+                console.log(err);
+            })
+        },
+        getUsers() {
+            axios.get("https://universityweb.site/api/admin/profiles", {headers: {'Authorization': localStorage.getItem('accessToken')}}).then(respp => {
+                if(respp.status == 200){
+                    this.datas = respp.data.data;
+                }
+            }).catch(err => {
+                console.log(err.response.data.msg);
+            })
+        },
+        deletee(uid) {
+            let req = {
+                id: uid
+            }
+
+            axios.delete("https://universityweb.site/api/admin/person/delete", {headers: {'Authorization': localStorage.getItem('accessToken')}, data: req}).then(resp => {
+                if(resp.status == 200){
+                    this.getUsers()
+                }
+            }).catch(err => {
+                console.log(err);
+            })
+        },
         ss(uid) {
             let req = {
                 id: uid,
@@ -220,46 +293,13 @@ export default {
 
             axios.put("https://universityweb.site/api/admin/changedata", req,{headers: {'Authorization': localStorage.getItem('accessToken')}}).then(resp => {
                 if(resp.status == 200){
-                    this.$router.go()
-                }
-            }).catch(err => {
-                console.log(err);
-            })
-        },
-        deletee(uid) {
-            let req = {
-                id: uid
-            }
-
-            axios.delete("https://universityweb.site/api/admin/person/delete", {headers: {'Authorization': localStorage.getItem('accessToken')}, data: req}).then(resp => {
-                if(resp.status == 200){
-                    this.$router.go()
-                }
-            }).catch(err => {
-                console.log(err);
-            })
-        },
-        deleteNews(uid) {
-            let req = {
-                id: uid
-            }
-
-            axios.delete("https://universityweb.site/api/deletenews", {headers: {'Authorization': localStorage.getItem('accessToken')}, data: req}).then(resp => {
-                if(resp.status == 200){
-                    this.$router.go()
-                }
-            }).catch(err => {
-                console.log(err);
-            })
-        },
-        deleteMessage(uid) {
-            let req = {
-                id: uid
-            }
-
-            axios.delete("https://universityweb.site/api/deletemessage", {headers: {'Authorization': localStorage.getItem('accessToken')}, data: req}).then(resp => {
-                if(resp.status == 200){
-                    this.$router.go()
+                    this.change.faculty = '';
+                    this.change.group = '';
+                    this.change.form_of_education = '';
+                    this.change.level = '';
+                    this.change.lastName = '';
+                    this.change.firstName = '';
+                    this.getUsers()
                 }
             }).catch(err => {
                 console.log(err);
@@ -273,7 +313,7 @@ export default {
 
             axios.put("https://universityweb.site/api/admin/changerole", req, {headers: {'Authorization': localStorage.getItem('accessToken')}}).then(resp => {
                 if(resp.status == 200){
-                    this.$router.go()
+                    this.getUsers()
                 }
             }).catch(err => {
                 console.log(err);
@@ -281,37 +321,9 @@ export default {
         }
     },
     mounted() {
-        axios.get("https://universityweb.site/api/admin/profiles", {headers: {'Authorization': localStorage.getItem('accessToken')}}).then(respp => {
-            if(respp.status == 200){
-                this.datas = respp.data.data;
-            }
-        }).catch(err => {
-            console.log(err.response.data.msg);
-        })
-
-        axios.get("https://universityweb.site/api/news", {headers: {'Authorization': localStorage.getItem('accessToken')}}).then(respp => {
-            if(respp.status == 200){
-                this.news = respp.data.data;
-            }
-        }).catch(err => {
-            this.$notify({
-                title: 'Ошибка',
-                type: 'error',
-                text: err.response.data.msg
-            })
-        })
-
-        axios.get("https://universityweb.site/api/messages", {headers: {'Authorization': localStorage.getItem('accessToken')}}).then(respp => {
-            if(respp.status == 200){
-                this.messes = respp.data.data;
-            }
-        }).catch(err => {
-            this.$notify({
-                title: 'Ошибка',
-                type: 'error',
-                text: err.response.data.msg
-            })
-        })
+        this.getUsers()
+        this.getNews()
+        this.getMessages()
     }
 }
 </script>
