@@ -18,16 +18,16 @@
                     <li class="nav-item">
                         <router-link class="nav-link active" to="/">Главная</router-link>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" v-if="this.$store.state.role == 'admin' || this.$store.state.role == 'teacher'">
                         <router-link class="nav-link " to="/createnews">Опубликовать новость</router-link>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" v-if="this.$store.state.role == 'admin'">
                         <router-link class="nav-link " to="/admin">Админ панель</router-link>
                     </li>
                 </ul>
 
                 <ul class="navbar-nav mb-2 mb-lg-0">
-                    <li class="nav-item" style="margin-right: 10px">
+                    <li class="nav-item" style="margin-right: 10px" v-if="this.$store.state.status == true">
                         <router-link to="/profile">
                             <button type="button" class="btn btn-info btn-floating">
                                 <i class="fa fa-user-alt"></i>
@@ -41,7 +41,6 @@
             </div>
         </div>
     </nav>
-    {{this.$store.state}}
 </template>
 
 <script>

@@ -21,21 +21,21 @@
         </div>
     </div>
 
-    <div class="card mt-4">
+    <div class="card mt-4" v-for="(arrays, index) in list">
         <h5 class="card-header d-flex justify-content-between">
             <button type="button" class="btn btn-outline-info btn-rounded" data-mdb-ripple-color="dark">
-                <span class="sss">Социальная жизнь</span>
+                <span class="sss">{{arrays.tag}}</span>
             </button> 
-            <button type="submit" class="btn btn-danger btn-floating"  style=" margin-bottom: 5px">
+            <button v-if="this.$store.state.role == 'admin'"  v-on:click="deleteMessage(arrays.id)" type="submit" class="btn btn-danger btn-floating"  style=" margin-bottom: 5px">
                 <i class="fas fa-trash"></i>
             </button>
         </h5>
         <div class="card-body">
-            <h5 class="card-title">Животным денег не давать.</h5>
-            <p class="card-text">О событиях на прошлый вечер: на площадке форума "Хакатон autumn 2022" найдены котики и они мурчат. Сначала один котик требовал деньги на прокорм, но после строгого выговора он перестал промышлять подобными делами. Затем котиков стало больше, они развлекали участников, разрешали делать фотографии с ними (в этот раз бесплатно). Затем один из плюшевых порадовал участников форума своей игрой на гитаре.</p>
+            <h5 class="card-title">{{arrays.title}}</h5>
+            <p class="card-text">{{arrays.body}}</p>
         </div>
         <div class="card-footer text-muted">
-            <i class="far fa-calendar-plus"></i>  23.10.2022 14:08:23 | Автор: Елизавета Пшеничная
+            <i class="far fa-calendar-plus"></i>  {{new Date(arrays.time * 1000).toLocaleDateString()}} {{new Date(arrays.time * 1000).toLocaleTimeString()}} | Автор: <router-link class="text-muted" :to="`/profile/`+arrays.authorId">{{arrays.authorFirstName}} {{arrays.authorLastName}}</router-link>
         </div>
     </div>
 </template>
@@ -47,12 +47,31 @@ export default {
     name: 'NewsBlock',
     data() {
         return {
-
+            list: []
         }
+    },
+    methods: {
+        deleteMessage(uid) {
+            let req = {
+                id: uid
+            }
+
+            axios.delete("https://universityweb.site/api/deletenews", {headers: {'Authorization': localStorage.getItem('accessToken')}, data: req}).then(resp => {
+                if(resp.status == 200){
+                    axios.get("https://universityweb.site/api/news", {headers: {'Authorization': localStorage.getItem('accessToken')}}).then(respp => {
+                        this.list = respp.data.data;
+                    }).catch(err => {
+                        console.log(err);
+                    })
+                }
+            }).catch(err => {
+                console.log(err);
+            })
+        },
     },
     mounted() {
         axios.get("https://universityweb.site/api/news", {headers: {'Authorization': localStorage.getItem('accessToken')}}).then(respp => {
-            console.log(respp.data.data);
+            this.list = respp.data.data;
         }).catch(err => {
             console.log(err);
         })

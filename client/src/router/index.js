@@ -6,6 +6,28 @@ import Registration from '../views/Registration.vue'
 import success from '../views/success.vue'
 import CreateNews from '../views/CreateNews.vue'
 import AdminPanel from '../views/AdminPanel.vue'
+import store from '../store'
+let authToken = localStorage.getItem('accessToken');
+
+let managerAdminGuard = function(to, from, next) {
+    if(!authToken) {
+        next('/login')
+    }else if(store.state.role != 'admin'){
+        next('/')
+    }else {
+        next()
+    }
+}
+
+let managerNewsGuard = function(to, from, next) {
+    if(!authToken) {
+        next('/login')
+    }else if(store.state.role != 'admin' && store.state.role != 'teacher'){
+        next('/')
+    }else {
+        next()
+    }
+}
 
 const routes = [
     {
@@ -36,12 +58,14 @@ const routes = [
     {
         path: '/createnews',
         name: 'CreateNews',
-        component: CreateNews
+        component: CreateNews,
+        beforeEnter: managerNewsGuard
     },
     {
         path: '/admin',
         name: 'AdminPanel',
-        component: AdminPanel
+        component: AdminPanel,
+        beforeEnter: managerAdminGuard
     }
 ]
 

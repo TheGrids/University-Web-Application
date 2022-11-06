@@ -18,7 +18,6 @@ export default {
     mounted() {
         if(localStorage.getItem('accessToken')){
             axios.get("https://universityweb.site/api/verification", {headers: {'Authorization': localStorage.getItem('accessToken')}}).then(resp => {
-                console.log(resp.headers['role']);
                 this.$store.commit('loginSuccess', {access: localStorage.getItem('accessToken'), role: resp.headers['role']})
             }).catch(err => {
                 this.$store.dispatch('logout')
