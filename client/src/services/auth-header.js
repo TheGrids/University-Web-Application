@@ -1,13 +1,13 @@
-function authHeader(){
-    let accessToken = localStorage.getItem('accessToken');
+// function authHeader(){
+//     let accessToken = localStorage.getItem('accessToken');
 
-    if (accessToken) {
-        return { 
-            Authorization: accessToken 
-        };
-    } else {
-        return {};
-    }
-}
+//     if (accessToken) {
+//         return { 
+//             Authorization: accessToken 
+//         };
+//     } else {
+//         return {};
+//     }
+// }
 
-export default authHeader()
+// export default authHeader()

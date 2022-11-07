@@ -22,12 +22,12 @@
                     
                     <div class="i-title">Заголовок</div>
                     <div class="form-outline mb-4">
-                        <input type="text" id="form2Example1" class="form-control"/>
+                        <input type="text" v-model="why" id="form2Example1" class="form-control"/>
                     </div>
 
                     <div class="i-title">Сообщение</div>
                     <div class="form-outline mb-4">
-                        <textarea class="form-control" style="min-height: 100px"></textarea>
+                        <textarea class="form-control" style="min-height: 100px" v-model="message"></textarea>
                     </div>
 
                 </div>
@@ -35,7 +35,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Отмена</button>
-                <button type="submit" class="btn btn-primary" >Отправить</button>
+                <button type="submit" class="btn btn-primary" v-on:click="sendMess()">Отправить</button>
             </div>
             </div>
         </div>
@@ -43,7 +43,31 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
-    name: 'Rectors'
+    name: 'Rectors',
+    data() {
+        return {
+            message: '',
+            why: '',
+        }
+    },
+    methods: {
+        sendMess(){
+            let res = {
+                title: this.why,
+                body: this.message
+            }
+
+            axios.post("https://universityweb.site/api/addmessage", res, {headers: {'Authorization': localStorage.getItem('accessToken')}}).then(respp => {
+                if(respp.status == 200){
+                    this.$router.go()
+                }
+            }).catch(err => {
+                console.log(err);
+            })
+        },
+    }
 }
 </script>
