@@ -36,6 +36,7 @@
                     </td>
                     <td >
                         <button
+                            v-if="arrays.id != uid"
                             class="btn btn-info dropdown-toggle"
                             type="button"
                             id="dropdownMenuButton"
@@ -53,7 +54,7 @@
                     <td>
                     <button type="submit" class="btn btn-info btn-floating"  data-mdb-toggle="modal" :data-mdb-target="`#exampleModal`+arrays.id" style="margin-bottom: 5px; margin-right: 5px;" v-on:click=""><i class="fas fa-edit"></i></button>
 
-                    <button type="submit" class="btn text-white btn-floating bg-danger"  style=" margin-bottom: 5px" v-on:click="deletee(arrays.id)"><i class="fas fa-trash"></i></button>
+                    <button v-if="arrays.id != uid" type="submit" class="btn text-white btn-floating bg-danger"  style=" margin-bottom: 5px" v-on:click="deletee(arrays.id)"><i class="fas fa-trash"></i></button>
                     </td>
 
                     <!-- Modal -->
@@ -187,6 +188,7 @@
 
 <script>
 import axios from 'axios'
+import VueJwtDecode from 'vue-jwt-decode'
 
 export default {
     name: 'AdminPanel',
@@ -201,6 +203,7 @@ export default {
                 lastName: '',
                 firstName: ''
             },
+            uid: null,
             news: [],
             messes: []
         }
@@ -321,6 +324,8 @@ export default {
         }
     },
     mounted() {
+        let res = VueJwtDecode.decode(localStorage.getItem('accessToken'))
+        this.uid = res.userid
         this.getUsers()
         this.getNews()
         this.getMessages()

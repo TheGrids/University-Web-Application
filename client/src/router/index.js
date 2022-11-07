@@ -36,7 +36,7 @@ const routes = [
         component: Home
     },
     {
-        path: '/profile',
+        path: '/profile/:uid',
         name: 'Profile',
         component: Profile
     },
@@ -75,7 +75,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    const publicPages = ['/login', '/registration', '/'];
+    const publicPages = ['/login', '/registration', '/', '/profile'];
     const authRequired = !publicPages.includes(to.path);
     const loggedIn = localStorage.getItem('accessToken');
 

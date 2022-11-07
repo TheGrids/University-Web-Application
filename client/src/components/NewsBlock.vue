@@ -10,13 +10,13 @@
                 data-mdb-toggle="dropdown"
                 aria-expanded="false"
             >
-                Все
+                {{this.tag}}
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li><button type="submit" class="dropdown-item">Все</button></li>
-                <li><button type="submit" class="dropdown-item">Социальная жизнь</button></li>
-                <li><button type="submit" class="dropdown-item">Учебные новости</button></li>
-                <li><button type="submit" class="dropdown-item">Жизнь ВУЗа</button></li>
+                <li><button type="submit" class="dropdown-item" v-on:click="changeTag('Все')">Все</button></li>
+                <li><button type="submit" class="dropdown-item" v-on:click="changeTag('Социальная жизнь')">Социальная жизнь</button></li>
+                <li><button type="submit" class="dropdown-item" v-on:click="changeTag('Учебные новости')">Учебные новости</button></li>
+                <li><button type="submit" class="dropdown-item" v-on:click="changeTag('Жизнь ВУЗа')">Жизнь ВУЗа</button></li>
             </ul>
         </div>
     </div>
@@ -47,10 +47,34 @@ export default {
     name: 'NewsBlock',
     data() {
         return {
-            list: []
+            list: [],
+            tag: 'Все'
         }
     },
     methods: {
+        getAllNews(){
+            axios.get("https://universityweb.site/api/news", {headers: {'Authorization': localStorage.getItem('accessToken')}}).then(respp => {
+                this.list = respp.data.data;
+            }).catch(err => {
+                console.log(err);
+            })
+        },
+        changeTag(tagg){
+            this.tag = tagg;
+            let ress = {
+                tag: this.tag
+            }
+            axios.post("https://universityweb.site/api/newssort", ress, {headers: {'Authorization': localStorage.getItem('accessToken')}}).then(respp => {
+                if(respp.status == 200){
+                    this.list = respp.data.data
+                }
+            }).catch(err => {
+                console.log(err);
+            })
+            if(this.tag == 'Все'){
+                this.getAllNews()
+            }
+        },
         deleteMessage(uid) {
             let req = {
                 id: uid
@@ -70,11 +94,7 @@ export default {
         },
     },
     mounted() {
-        axios.get("https://universityweb.site/api/news", {headers: {'Authorization': localStorage.getItem('accessToken')}}).then(respp => {
-            this.list = respp.data.data;
-        }).catch(err => {
-            console.log(err);
-        })
+        this.getAllNews();
     }
 }
 </script>

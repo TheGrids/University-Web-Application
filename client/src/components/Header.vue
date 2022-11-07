@@ -28,7 +28,7 @@
 
                 <ul class="navbar-nav mb-2 mb-lg-0">
                     <li class="nav-item" style="margin-right: 10px" v-if="this.$store.state.status == true">
-                        <router-link to="/profile">
+                        <router-link :to="'/profile/'+uid">
                             <button type="button" class="btn btn-info btn-floating">
                                 <i class="fa fa-user-alt"></i>
                             </button>
@@ -44,11 +44,13 @@
 </template>
 
 <script>
+import VueJwtDecode from 'vue-jwt-decode'
+
 export default {
     name: 'Header',
     data() {
         return {
-
+            uid: null
         }
     },
     methods: {
@@ -56,6 +58,10 @@ export default {
             this.$store.dispatch('logout');
             this.$router.push('/registration');
         }
+    },
+    mounted(){
+        let res = VueJwtDecode.decode(localStorage.getItem('accessToken'))
+        this.uid = res.userid
     }
 }
 </script>
