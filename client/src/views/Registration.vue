@@ -49,7 +49,7 @@
                 </div>
             </div>
             <!-- Submit button -->
-            <button type="submit" class="btn c-q btn-block mt-2">Зарегистрироваться</button>
+            <button type="submit" class="btn btn-info btn-block mt-2">Зарегистрироваться</button>
         </form>
     </div>
 </template>

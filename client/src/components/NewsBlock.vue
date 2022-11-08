@@ -21,7 +21,10 @@
         </div>
     </div>
 
-    <div class="card mt-4" v-for="(arrays, index) in list">
+    <div v-if="!list[0]" class="overlay">
+        <img src="../assets/three-dots.svg" width="30">
+    </div>
+    <div v-if="list[0]" class="card mt-4" v-for="(arrays, index) in list">
         <h5 class="card-header d-flex justify-content-between">
             <button type="button" class="btn btn-outline-info btn-rounded" data-mdb-ripple-color="dark">
                 <span class="sss">{{arrays.tag}}</span>
@@ -64,15 +67,16 @@ export default {
             let ress = {
                 tag: this.tag
             }
-            axios.post("https://universityweb.site/api/newssort", ress, {headers: {'Authorization': localStorage.getItem('accessToken')}}).then(respp => {
-                if(respp.status == 200){
-                    this.list = respp.data.data
-                }
-            }).catch(err => {
-                console.log(err);
-            })
             if(this.tag == 'Все'){
                 this.getAllNews()
+            }else{
+                axios.post("https://universityweb.site/api/newssort", ress, {headers: {'Authorization': localStorage.getItem('accessToken')}}).then(respp => {
+                    if(respp.status == 200){
+                        this.list = respp.data.data
+                    }
+                }).catch(err => {
+                    console.log(err);
+                })
             }
         },
         deleteMessage(uid) {

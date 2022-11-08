@@ -60,8 +60,8 @@ export default {
         }
     },
     mounted(){
-        let res = VueJwtDecode.decode(localStorage.getItem('accessToken'))
-        this.uid = res.userid
+        if(localStorage.getItem('accessToken'))
+            this.uid  = VueJwtDecode.decode(localStorage.getItem('accessToken')).userid
     }
 }
 </script>
