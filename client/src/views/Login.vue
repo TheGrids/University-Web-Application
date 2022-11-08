@@ -25,6 +25,8 @@
 </template>
 
 <script>
+import VueJwtDecode from 'vue-jwt-decode'
+
 export default {
     name: 'Login',
     data() {
@@ -32,16 +34,27 @@ export default {
             user: {
                 email: '',
                 password: ''
-            }
+            },
+            idd: null
         }
     },
     methods: {
         Login() {
             this.$store.dispatch('login', this.user).then(() => {
-                this.$router.push('/profile')
+                if(localStorage.getItem('accessToken')){
+                    this.idd = VueJwtDecode.decode(localStorage.getItem('accessToken')).userid
+                }
+                this.$router.push('/profile/'+this.idd).then(() => {
+                    this.$router.go()
+                })
             }, err => {
                 console.log(err);
             })
+        }
+    },
+    mounted() {
+        if(localStorage.getItem('accessToken')){
+            this.idd = VueJwtDecode.decode(localStorage.getItem('accessToken')).userid
         }
     }
 }
