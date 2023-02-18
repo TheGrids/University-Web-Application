@@ -4,4 +4,4 @@
 
 > https://universityweb.site
 
-#### Стек: Vue 3, Golang, Docker
+##### Стек: Vue 3, Golang, Docker
